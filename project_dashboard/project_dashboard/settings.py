@@ -87,12 +87,13 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'OPTIONS': {
-#             'read_default_file': 'my.cnf',
-#         },
+#         'NAME': 'dashboard',
+#         'USER': 'root',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
 #     }
 # }
-
 
 
 # Password validation
