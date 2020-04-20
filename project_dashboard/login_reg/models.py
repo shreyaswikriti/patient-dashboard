@@ -95,3 +95,20 @@ class User(AbstractBaseUser):
     def is_active(self):
         "Is the user active?"
         return self.active
+
+
+
+USER_ROLES = (
+    ("DOCTOR", "DOCTOR"),
+    ("PATIENT", "PATIENT"),
+    ("HOSPITAL", "HOSPITAL")
+    )
+
+
+
+class UserRoles(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    roles = models.CharField(max_length=100, choices=USER_ROLES)
+
+    def __str__(self):
+        return self.roles

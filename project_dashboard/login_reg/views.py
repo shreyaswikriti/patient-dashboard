@@ -5,6 +5,10 @@ from .forms import *
 from django.contrib import messages
 import logging
 from .utility import *
+from .models import *
+from django.db import transaction
+from .decorators import unathenticated_user
+
 
 logger = logging.getLogger(__name__)
 
@@ -12,24 +16,31 @@ logger = logging.getLogger(__name__)
 # @login_required(login_url='reg_doc')
 def home(request):
 	logger.info("Registration/login page requested")
-	return render(request, 'registration_login.html', {})
+	if request.user.is_authenticated:
+		try:
+			roles = UserRoles.objects.filter(user=request.user).first().roles
+			if roles is not None:
+				if roles == 'DOCTOR':
+					return redirect('doc_dash')
+				elif roles == "PATIENT":
+					return redirect('patient_detail')
+				elif roles == "HOSPITAL":
+					return redirect('hosp_dash')
+			else:
+				logger.error("User role is none")
+				messages.error("User has no role")
+				return redirect("error")
+		except:
+			logger.error("User has no roles")
+	else:
+		return render(request, 'registration_login.html', {})
 
-# def register_user(request):
-#     if request.method=="POST":
-#         form = RegisterForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             username = form.cleaned_data['email']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, username=username, password=password)
-#             login(request,user)
-#             messages.success(request,('You have registered....'))
-#             return redirect('register_user')
-#     else:
-#             form=RegisterForm()
-#     context = {'form':form}
-#     return render(request, 'registration_login.html', context)
 
+def error(request):
+	return render(request, 'error.html', {})
+
+@unathenticated_user
+@transaction.atomic
 def register_doc(request):
 	if request.method=='POST':
 		form = UserAdminCreationForm(request.POST)
@@ -40,6 +51,8 @@ def register_doc(request):
 			logger.info("User is Created")
 			user = authenticate(request, username=username, password=password)
 			login(request, user)
+			logger.info("Users role has been assigned")
+			UserRoles.objects.create(user=request.user, roles="DOCTOR")
 			logger.info("User has been loggen in")
 			messages.success(request,('You have registered....'))
 			return redirect('home')
@@ -48,6 +61,8 @@ def register_doc(request):
 	context = {'form' : form}
 	return render(request, 'doc_reg.html', context)
 
+@unathenticated_user
+@transaction.atomic
 def register_hospital(request):
 	if request.method=='POST':
 		form = UserAdminCreationForm(request.POST)
@@ -58,6 +73,7 @@ def register_hospital(request):
 			logger.info("User is Created")
 			user = authenticate(request, username=username, password=password)
 			login(request, user)
+			UserRoles.objects.create(user=request.user, roles="HOSPITAL")
 			logger.info("User has been loggen in")
 			messages.success(request,('You have registered....'))
 			return redirect('home')
@@ -66,7 +82,8 @@ def register_hospital(request):
 	context = {'form' : form}
 	return render(request, 'hospital_reg.html', context)
 
-
+@unathenticated_user
+@transaction.atomic
 def register_patient(request):
 	if request.method=='POST':
 		form = UserAdminCreationForm(request.POST)
@@ -77,6 +94,7 @@ def register_patient(request):
 			logger.info("User is Created")
 			user = authenticate(request, username=username, password=password)
 			login(request, user)
+			UserRoles.objects.create(user=request.user, roles="PATIENT")
 			logger.info("User has been loggen in")
 			messages.success(request,('You have registered....'))
 			return redirect('home')
@@ -91,7 +109,7 @@ def logout_user(request):
     return redirect('home')
 
 
-
+@unathenticated_user
 def login_user(request):
     if request.method =='POST':
         username = request.POST['email']
