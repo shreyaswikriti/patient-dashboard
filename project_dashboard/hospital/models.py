@@ -11,7 +11,7 @@ TYPE =(
 class hospitalProfile(models.Model):
 	registrationid = models.CharField(max_length=255)
 	name = models.CharField(max_length=200)
-	dateofreg = models.DateField()
+	dateofreg = models.DateField(null=True)
 	tyep = models.CharField(max_length=50, choices= TYPE)
 	user = models.OneToOneField(User, on_delete = models.CASCADE)
 	timestamp = models.DateTimeField(auto_now_add=True)

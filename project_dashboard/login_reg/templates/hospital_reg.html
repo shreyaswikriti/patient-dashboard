@@ -8,8 +8,8 @@
 <form method="POST">
      {% csrf_token %}
    <div class="form-row">
-   <div class="col"><input type="text" id="hospitalName" class="form-control" placeholder="Hospital name"></div>
-   <div class="col"><input type="text" id="hospitalReg" class="form-control" placeholder="Registration Number"></div>
+   <div class="col"><input type="text" id="hospitalName" name="hospitalName" class="form-control" placeholder="Hospital name"></div>
+   <div class="col"><input type="text" id="hospitalReg" name="hospitalReg" class="form-control" placeholder="Registration Number"></div>
 </div>
 <div class="form-row">
  <div class="col"> {{form.email}}</div>
@@ -19,7 +19,7 @@
 </div>
 <div class="form-row">
    <div class="col">
-      <select id="" class="form-control">
+      <select id="" name="type" class="form-control">
       	<option selected>Type</option>
       	<option>Government</option>
       	<option>Private</option>

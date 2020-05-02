@@ -7,8 +7,16 @@
 <form method="POST">
      {% csrf_token %}
    <div class="form-row">
-   <div class="col"><input type="text" id="first" class="form-control" placeholder="First name"></div>
-   <div class="col"><input type="text" id="last" class="form-control" placeholder="Last name"></div>
+   <div class="col"><input type="text" id="first" name="firstName" class="form-control" placeholder="First name"></div>
+   <div class="col"><input type="text" id="last" name="lastName" class="form-control" placeholder="Last name"></div>
+   <div class="col">
+      <select id="" name="gender" class="form-control">
+         <option selected>Gender</option>
+         <option>Male</option>
+         <option>Female</option>
+         <option>Others</option>
+      </select>
+   </div>
 </div>
 <div class="form-row">
  <div class="col"> {{form.email}}</div>
@@ -18,16 +26,15 @@
 </div>
 <div class="form-row">
    <div class="col">
-      <select id="" class="form-control">
-         <option selected>Gender</option>
+      <input type="text" id="bday" name="bday" class="form-control datepicker" placeholder="Birth Day">
+   </div>
+    <div class="col">
+        <select id="" name="gender" class="form-control">
+    <option selected>Hospital</option>
          <option>Male</option>
          <option>Female</option>
          <option>Others</option>
-      </select>
-   </div>
-   <div class="col">
-      <input type="text" id="bday" class="form-control datepicker" placeholder="Birth Day">
-   </div>
+      </select>   </div>
 </div>
      <input class="btn btn-primary btnn" type="submit" value="Register">
    </form>;

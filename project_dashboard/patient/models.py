@@ -53,3 +53,19 @@ class TreatmentComment(models.Model):
 	timestamp = models.DateTimeField(auto_now_add=True)
 	doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
 	treatment = models.ForeignKey(PatientTreatment, on_delete=models.CASCADE)
+
+
+
+
+STATUS = (('CONFIRMED', 'CONFIRMED'),
+	('REQUESTED', 'REQUESTED'),
+	('NA','NA'))
+class PatientAppointment(models.Model):
+	status = models.CharField(max_length=100, choices=STATUS)
+	appointment = models.DateTimeField(auto_now_add=False)
+	user = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
+	doctor =models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
+	timestamp= models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return self.status
