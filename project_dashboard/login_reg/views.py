@@ -27,7 +27,7 @@ def home(request):
 				if roles == 'DOCTOR':
 					return redirect('doc_dash')
 				elif roles == "PATIENT":
-					return redirect('patient_detail')
+					return redirect('treatment_list')
 				elif roles == "HOSPITAL":
 					return redirect('hosp_dash')
 			else:

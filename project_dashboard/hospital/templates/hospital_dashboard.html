@@ -6,3 +6,29 @@
 
 {%block nav2 %} <a class="nav-link" href="{% url 'hospital_profile' %}"> Hospital Profile </a>{% endblock %}
 
+{% block content %}
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th scope="col">Name</th>
+      <th scope="col">Birthday</th>
+      <th scope="col">Gender</th>
+      <th>Manage</th>
+    </tr>
+  </thead>
+   {% for doctor in doctors %}
+ <tbody>
+    <tr>
+      <th>{{ forloop.counter }}</th>
+      <th scope="row">{{doctor.firstName}}</th>
+      <td>{{doctor.dob}}</td>
+      <td>{{doctor.gender}}</td>
+     <td>  <button type="button" class="btn btn-primary">Manage...</button></td>
+    </tr>
+  </tbody>
+ {% endfor %}
+</table>
+
+{% endblock %}
