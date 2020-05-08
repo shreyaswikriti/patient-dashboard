@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from login_reg.decorators import allowed_roles
-from .models import PatientProfile, PatientTreatment, TreatmentComment
+from .models import PatientProfile, PatientTreatment, TreatmentComment,PatientAddress
 from doctor.models import DoctorSpecialisation
 from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 import logging
@@ -25,8 +26,17 @@ def treatment_list(request):
 
 
 
+
 def patient_profile(request):
-	return render(request, 'patient_profile.html', {})
+
+	try:
+		detail=PatientProfile.objects.filter(user=request.user).first()
+		logger.info("Name:{} {} dob: {} and Gender: {}".format(detail.firstName, detail.lastName, detail.dob, detail.gender))
+		details=PatientAddress.objects.filter(user=request.user).first()
+		logger.info("Address:{} city:{} District: {} Locality: {} State: {} Pincode: {} Nationality: {} contactno:{}".format(details.Address, details.city, details.district, details.locality,details.state,details.pincode,details.nationality,details.contactno))
+	except:
+		logger.error("oject not found")
+	return render(request, 'patient_profile.html', {"detail":detail,"details":details,"T":T}) 
 
 
 @login_required
