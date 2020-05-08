@@ -6,4 +6,34 @@
 {{% block nav %}<a class="navbar-brand" href="" >Patient Dashboard </a>{% endblock %}
 
 {%block nav2 %} <a class="nav-link" href="{% url 'patient_profile' %}">Patient Profile</a>{% endblock %}
+{%block search%} {% url 'doctor_search' %}{%endblock%}
+
+ {% block content %}
+ <table class="table table-hover">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th scope="col">Doctor</th>
+      <th scope="col">Diagnosis</th>
+      <th scope="col">Prescription</th>
+      <th scope="col">Active</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+   {% for treatment in treatments %}
+ <tbody>
+    <tr>
+      <th>{{ forloop.counter }}</th>
+      <th scope="row">{{treatment.doctor}}</th>
+      <td>{{treatment.diagnosis}}</td>
+      <td>{{treatment.prescription}}</td>
+      <td>{{treatment.active}}</td>
+     <td>  <button type="button" class="btn btn-primary"><a class="link" href="{% url 'patient_detail' treatment.id %}">Read More..</a></button></td>
+    </tr>
+  </tbody>
+ {% endfor %}
+</table>
+
+ 
+ {% endblock %}
 

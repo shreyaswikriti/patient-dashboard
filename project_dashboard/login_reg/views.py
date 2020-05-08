@@ -27,7 +27,7 @@ def home(request):
 				if roles == 'DOCTOR':
 					return redirect('doc_dash')
 				elif roles == "PATIENT":
-					return redirect('patient_detail')
+					return redirect('treatment_list')
 				elif roles == "HOSPITAL":
 					return redirect('hosp_dash')
 			else:
@@ -58,20 +58,29 @@ def register_doc(request):
 			logger.info("User has been loggen in")
 			UserRoles.objects.create(user=request.user, roles="DOCTOR")
 			logger.info("Users role DOCTOR has been assigned")
-			# try:
-			# 	firstName = request.POST['firstName']
-			# 	lastName = request.POST['lastName']
-			# 	bday = request.POST['bday']
-			# 	gender = request.POST['gender'].upper()
-			# 	DoctorProfile.objects.create(firstName=firstName,
-			# 		lastName=lastName,
-			# 		gender=gender,
-			# 		dob=bday,
-			# 		user=request.user,
-			# 		hospital=hospital)
-			# except:
-			# 	logger.error("User profile was as a doctor not able to get created")
-			messages.success(request,('You have registered....'))
+			try:
+				firstName = request.POST['firstName']
+				lastName = request.POST['lastName']
+				gender = request.POST['gender'].upper()
+				bday = request.POST['bday']
+				hospital = request.POST['hospital']
+				logger.info("Doctor Name: {} {}, Birthday: {}, Gender:{} Hospital: {}".format(firstName, lastName, bday, gender, hospital))
+				temp_date = datetime.strptime(bday, "%m/%d/%Y").date()
+				logger.info(hospital)
+			except:
+				logger.error("User profile was as a doctor not able to get created")
+			if hospital is not None:
+				hospitalprofile = hospitalProfile.objects.filter(id=hospital).first()
+				logger.info(hospitalprofile)
+			else:
+				logger.error("Hospital with the id of {} is not found".format(hospital))
+			DoctorProfile.objects.create(firstName=firstName,
+					lastName=lastName,
+					gender=gender,
+					dob=temp_date,
+					user=request.user,
+					hospital=hospitalprofile)
+			messages.success(request,('You have registered as a Doctor....'))
 			return redirect('home')
 	else:
 		form = UserAdminCreationForm()
@@ -106,7 +115,7 @@ def register_hospital(request):
 				user = request.user)
 			logger.info("Hospital Profile Created with a name " + hospitalName)
 			logger.info("User has been loggen in")
-			messages.success(request,('You have registered....'))
+			messages.success(request,('You have registered as a Hospital....'))
 			return redirect('home')
 	else:
 		form = UserAdminCreationForm()
@@ -144,7 +153,7 @@ def register_patient(request):
 					user=request.user)
 
 			logger.info("User has been loggen in")
-			messages.success(request,('You have registered....'))
+			messages.success(request,('You have registered as a Patient....'))
 			return redirect('home')
 	else:
 		form = UserAdminCreationForm()

@@ -29,15 +29,17 @@
       <input type="text" id="bday" name="bday" class="form-control datepicker" placeholder="Birth Day">
    </div>
     <div class="col">
-        <select id="" name="gender" class="form-control">
+        <select id="hospital1" name="hospital" class="form-control">
     <option selected>Hospital</option>
-         <option>Male</option>
-         <option>Female</option>
-         <option>Others</option>
+    {% if hospital %}
+           {% for h in hospital %}
+            <option value="{{h.id}}">{{h.name}}</option>
+   {% endfor %}
+    {% endif %}
       </select>   </div>
 </div>
      <input class="btn btn-primary btnn" type="submit" value="Register">
-   </form>;
+   </form>
    </div>
 
 

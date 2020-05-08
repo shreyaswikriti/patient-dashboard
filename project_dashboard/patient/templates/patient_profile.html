@@ -3,9 +3,11 @@
 
 {% block title %} Patient Profile {% endblock %}
 {{% block nav %}<a class="navbar-brand" href="" >Patient Profile </a>{% endblock %}
+{%block nav2 %} <a class="nav-link" href="{% url 'treatment_list' %}">Patient Dashboard </a>{% endblock %}
+{%block search%} {% url 'doctor_search' %}{%endblock%}
 
-{%block nav2 %} <a class="nav-link" href="{% url 'patient_detail' %}">Patient Dashboard </a>{% endblock %}
 {% block content %}
+
 
 <style type="text/css">
 		.table td{ 
@@ -53,6 +55,7 @@ height: 20px;
     </tbody>
   </table>
 </div>
+{% if details %}
 <div>
 <table class="table table-hover">
     <thead>
@@ -108,27 +111,5 @@ height: 20px;
     </tbody>
   </table>
 </div>
-<div>
-<table class="table table-hover">
-    <thead>
-      <tr>
-        <h1>TREATMENT</h1>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td >DIAGNOSIS</td>
-        
-        <td>{{T.diagnosis}}</td>
-      </tr>
-      
-      <tr>
-        <td>PRESCRIPTION</td>
-        
-        <td>{{T.prescription}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</table>
+{% endif %}
 {% endblock %}

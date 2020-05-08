@@ -8,16 +8,30 @@
 
 
  {% block content %}
- <!-- {{detail.firstName}}
- <br>
- {{detail.lastName}}
- <br>
- {{detail.hospital.name}}
- <br>
- {{detail.dob}}
-
- {{education.college}}
- {{education.degree}} -->
+ <table class="table table-hover">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th scope="col">Patient</th>
+      <th scope="col">Diagnosis</th>
+      <th scope="col">Prescription</th>
+      <th scope="col">Active</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+   {% for patient in patients %}
+ <tbody>
+    <tr>
+      <th>{{ forloop.counter }}</th>
+      <th scope="row">{{patient.patient}}</th>
+      <td>{{patient.diagnosis}}</td>
+      <td>{{patient.prescription}}</td>
+      <td>{{patient.active}}</td>
+     <td>  <button type="button" class="btn btn-primary">Read More..</button></td>
+    </tr>
+  </tbody>
+ {% endfor %}
+</table>
 
  {% endblock %}
 
