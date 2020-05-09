@@ -1,16 +1,16 @@
 from django.shortcuts import render, redirect
 from login_reg.decorators import allowed_roles
-from .models import PatientProfile, PatientTreatment, TreatmentComment,PatientAddress
-from doctor.models import DoctorSpecialisation
+from .models import PatientProfile, PatientTreatment, TreatmentComment, PatientAppointment, PatientAddress
+from doctor.models import DoctorSpecialisation, DoctorProfile
 from django.contrib.auth.decorators import login_required
-
-
+from django.contrib import messages
+from datetime import datetime
 # Create your views here.
 import logging
 
 logger = logging.getLogger(__name__)
 
-@login_required
+@login_required(login_url='home')
 @allowed_roles(allowed_roles=['PATIENT'])
 def treatment_list(request):
 	# logger.info("Requesting for registration or Login Page")
@@ -27,8 +27,9 @@ def treatment_list(request):
 
 
 
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])
 def patient_profile(request):
-
 	try:
 		detail=PatientProfile.objects.filter(user=request.user).first()
 		logger.info("Name:{} {} dob: {} and Gender: {}".format(detail.firstName, detail.lastName, detail.dob, detail.gender))
@@ -36,10 +37,10 @@ def patient_profile(request):
 		logger.info("Address:{} city:{} District: {} Locality: {} State: {} Pincode: {} Nationality: {} contactno:{}".format(details.Address, details.city, details.district, details.locality,details.state,details.pincode,details.nationality,details.contactno))
 	except:
 		logger.error("oject not found")
-	return render(request, 'patient_profile.html', {"detail":detail,"details":details,"T":T}) 
+	return render(request, 'patient_profile.html', {"detail":detail,"details":details }) 
 
 
-@login_required
+@login_required(login_url='home')
 @allowed_roles(allowed_roles=['PATIENT'])
 def patient_detail(request, pk):
 	treatment = PatientTreatment.objects.filter(id=pk).first()
@@ -53,16 +54,44 @@ def patient_detail(request, pk):
 	return render(request, 'patient_detail.html', context)
 
 
-@login_required
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])
 def doctor_search(request):
 	query = request.GET['query']
 	rs = DoctorSpecialisation.objects.filter(treatment__icontains=query)
 	context = {'rs':rs}
 	return render(request, 'doctor_search.html', context)
 
-@login_required
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])
 def make_appointment(request):
 	doc = request.POST['doctor']
 	logger.info("Doctor with id {} got request for appointment".format(doc))
-	context = {}
+	doctor = DoctorProfile.objects.filter(id=doc).first()
+	treatment = DoctorSpecialisation.objects.filter(doctor=doctor)
+	context = {'doctor':doctor, 'treatment':treatment}
 	return render(request, 'appointment.html', context)
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])
+def save_appoinment(request):
+	logger.info('Saving appointment')
+	try:
+		doc = request.POST['doc_id']
+		treatment = request.POST['treatment']
+		appointmenttime = request.POST['appointmenttime']
+		status =  request.POST['status'].upper()
+		logger.info('Requested for the appoinmenttime {} {} {} {}'.format(doc, appointmenttime, treatment, status))
+		temp_date = datetime.strptime(appointmenttime, "%m/%d/%Y").date()
+	except:
+		logger.info("Field were invalid")
+	logger.info("We got the"+ doc)
+	doctor = DoctorProfile.objects.filter(id=doc).first()
+	patient = PatientProfile.objects.filter(user=request.user).first()
+	PatientAppointment.objects.create(doctor=doctor,
+		user=patient,
+		appointment=temp_date,
+		status=status)
+	messages.success(request, ("Your appointment has been made"))
+	return redirect('home')

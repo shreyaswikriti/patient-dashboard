@@ -1,0 +1,39 @@
+{% extends 'hosp/base.html' %}
+
+
+{% block title %} Doctor Dashboard {% endblock %}
+{% block nav %}<a class="navbar-brand" href="" >Confirmed</a>{% endblock %}
+
+{%block nav3 %} <a class="nav-link" href="{% url 'requested_appointment' %}"> Requested </a>{% endblock %}
+
+{%block nav2 %} <a class="nav-link" href="{% url 'all_appointment' %}"> All Appointment </a>{% endblock %}
+
+
+
+
+{% block content %}
+ <table class="table table-hover" id="table1"
+  data-filter-control="true"
+  data-show-search-clear-button="true">
+  <thead>
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col" data-filter-control="input">Patient</th>
+      <th scope="col" data-filter-control="select">Appointment Time</th>
+      <th scope="col" data-filter-control="select">Gender</th>
+      <th scope="col" data-filter-control="select">Status</th>
+    </tr>
+  </thead>
+ <tbody>
+ 	   {% for appointment in appointments %}
+    <tr>
+      <td scope="row">{{ forloop.counter }}</td>
+      <td scope="row">{{appointment.user.firstName}}</td>
+      <td scope="row">{{appointment.appointment}}</td>
+      <td scope="row">{{appointment.user.gender}}</td>
+      <td scope="row">{{appointment.status}}</td>
+    </tr>
+     {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

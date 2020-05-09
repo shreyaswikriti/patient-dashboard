@@ -1,0 +1,39 @@
+{% extends 'hosp/base.html' %}
+
+
+{% block title %} Doctor Dashboard {% endblock %}
+        {% block nav %}<a class="navbar-brand" href="" >Requested</a>{% endblock %}
+{% block nav2 %}<a class="nav-link" href="{% url 'doc_dash' %}" >Doctor Dashboard </a>{% endblock %}
+
+{%block nav3 %} <a class="nav-link" href="{% url 'doctor_profile' %}"> Doctor Profile </a>{% endblock %}
+
+{%block nav4 %}  <li class="nav-item"> <a class="nav-link" href="{% url 'all_appointment' %}"> All Appointment </a> </li>{% endblock %}
+
+{% block content %}
+ <table class="table table-hover">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th scope="col">Patient</th>
+      <th scope="col">Appointment Time</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Status</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+ <tbody>
+ 	   {% for appointment in appointments %}
+    <tr>
+      <th>{{ forloop.counter }}</th>
+      <th scope="row">{{appointment.user.firstName}}</th>
+      <td>{{appointment.appointment}}</td>
+      <td>{{appointment.user.gender}}</td>
+      <td>{{appointment.status}}</td>
+     <td>  <form action="{% url 'update_appointment' %}"> <input type="hidden" name="status" value="Confirmed"> <input type="hidden" name="appointment_id" value="{{appointment.id}}"><button type="submit" class="btn btn-primary">Confirm</button></form></td>
+           <td><form action="{% url 'update_appointment' %}"><input type="hidden" name="status" value="NA"> <input type="hidden" name="appointment_id" value="{{appointment.id}}"><button type="submit" class = "btn btn-danger">Cancel</button></form></td>
+    </tr>
+     {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

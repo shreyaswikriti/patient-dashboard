@@ -2,4 +2,34 @@
 {{% block nav %}<a class="navbar-brand" href="" >Appointment</a>{% endblock %}
 {%block nav2 %} <a class="nav-link" href="{% url 'patient_profile' %}">Patient Profile</a>{% endblock %}
 {%block search%} {% url 'doctor_search' %}{%endblock%}
-
+{%block content%}
+<div class="container" id="reg">
+<form method="POST" action="{% url 'save_appoinment' %}">
+     {% csrf_token %}
+   <div class="form-row">
+   <div class="col"><input type="text" disabled id="first" name="firstName" class="form-control" value="Dr. {{doctor.firstName}} {{doctor.lastName}}">
+   	<input type="hidden" name="doc_id" value="{{doctor.id}}"></div>
+      <div class="col">
+    	  <input type="text" disabled id="first" name="hospName" class="form-control" value="{{doctor.hospital.name}}">
+    </div>
+   
+</div>
+<div class="form-row">
+	 <div class="col">
+        <select id="hospital1" name="treatment" class="form-control">
+    <option selected>Treatment Type</option>
+    {% if treatment %}
+           {% for t in treatment %}
+            <option>{{t.treatment|upper}}</option>
+   {% endfor %}
+    {% endif %}
+      </select>   </div>
+       <div class="col">
+      <input type="text" id="appointmenttime" name="appointmenttime" class="form-control datepicker" placeholder="Appointment Time">
+   </div>
+</div>
+   	<input type="hidden" name="status" value="REQUESTED">
+     <input class="btn btn-primary btnn" type="submit" value="Request Appointment">
+   </form>
+   </div>
+{% endblock %}
