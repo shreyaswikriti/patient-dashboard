@@ -24,7 +24,9 @@ def treatment_list(request):
 	treatments = PatientTreatment.objects.filter(patient=patient).order_by('last_edited')
 	if treatments is None:
 		logger.info("Patient was never diagnised")
-	context = {'treatments': treatments, 'patient':patient}
+	count = PatientAppointment.objects.filter(status='CONFIRMED', user=patient).order_by('appointment').count()
+	appointments = PatientAppointment.objects.filter(status='CONFIRMED', user=patient).order_by('appointment')[:6]
+	context = {'treatments': treatments, 'patient':patient, 'appointments':appointments, 'count':count}
 	return render(request, 'patient_dashboard.html', context)
 
 
@@ -131,73 +133,30 @@ def patient_address(request):
 		return redirect('patient_profile')
 	else:
 		return render(request,'patient_address.html',{})
-
-	
-
-
-
-			  		
-		
-		
-		
-		
-		
-		
-		
-
-	
+ 
+		   
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])
+def conf_appointment(request):
+	patient = PatientProfile.objects.filter(user=request.user).first()
+	appointments = PatientAppointment.objects.filter(status='CONFIRMED', user=patient).order_by('appointment')
+	context = {'appointments':appointments}
+	return render(request, 'conf_appointment.html', context)
 
 
-	
-		
-	
-	
-
-	
-	
-	
-    
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])
+def request_appointment(request):
+	patient = PatientProfile.objects.filter(user=request.user).first()
+	appointments = PatientAppointment.objects.filter(status='REQUESTED', user=patient).order_by('appointment')
+	context = {'appointments':appointments}
+	return render(request, 'request_appointment.html', context)
 
 
-       
-        	
-		        
-		        
-		        
-		        
-		        
-		    
-		    	
-	
-		
-		
-		
-		
-		
-		
-		
-		
-    
-   
-
-
-	
-	
-	
-		        
-		        
-		        
-		       
-		       
-		       
-		       
-	
-
-
-		
-
-    
-		
-    
-	
-	
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])
+def all_appointments(request):
+	patient = PatientProfile.objects.filter(user=request.user).first()
+	appointments = PatientAppointment.objects.filter(user=patient).order_by('appointment')
+	context = {'appointments':appointments}
+	return render(request, 'all_appointments.html', context)

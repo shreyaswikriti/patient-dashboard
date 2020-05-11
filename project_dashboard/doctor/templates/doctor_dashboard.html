@@ -30,7 +30,7 @@
       <td>{{patient.diagnosis}}</td>
       <td>{{patient.prescription}}</td>
       <td>{{patient.active}}</td>
-     <td>  <button type="button" class="btn btn-primary">Read More..</button></td>
+     <td>  <button type="button" class="btn btn-primary"><a class="link" href="{% url 'patient_treatment' patient.id %}">Read More..</a></button></td>
     </tr>
   </tbody>
  {% endfor %}

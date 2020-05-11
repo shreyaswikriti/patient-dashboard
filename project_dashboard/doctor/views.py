@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from login_reg.decorators import allowed_roles
 from .models import DoctorProfile, DoctorEducation
-from patient.models import PatientTreatment, PatientAppointment
+from patient.models import PatientTreatment, PatientAppointment, TreatmentComment
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -75,3 +75,33 @@ def confirmed_appointment(request):
 	appointments = PatientAppointment.objects.filter(doctor=doctor, status="CONFIRMED")
 	context = {'appointments': appointments}
 	return render(request, 'confirmed_appointment.html', context)
+
+
+
+
+
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def patient_treatment(request, pk):
+	doctor = DoctorProfile.objects.filter(user=request.user).first()
+	treatmentd = PatientTreatment.objects.filter(id=pk).first()
+	treatments = PatientTreatment.objects.filter(patient=treatmentd.patient)
+	context = {'treatments':treatments, 'treatmentd':treatmentd}
+	return render(request, 'patient_treatment.html', context)
+
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def treatment_detail(request, pk):
+	treatment = PatientTreatment.objects.filter(id=pk).first()
+	if treatment is None:
+		logger.error("Treatment does not exist")
+		redirect('error')
+	comments = TreatmentComment.objects.filter(treatment=treatment).order_by('timestamp')
+	if comments is None:
+		logger.info("No comments available")
+	context = {'comments':comments, 'treatment':treatment}
+	return render(request, 'treatment_detail.html', context)

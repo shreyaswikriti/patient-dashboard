@@ -9,6 +9,7 @@ urlpatterns = [
     path('appointment/', views.make_appointment, name='appointment'),
     path('save_appointment/', views.save_appoinment, name='save_appoinment'),
     path('patient_address/', views.patient_address, name='patient_address'),
-    
-
+    path('conf_appointment/', views.conf_appointment, name='conf_appointment'),
+    path('all_appointments/', views.all_appointments, name='all_appointments'),
+    path('request_appointment/', views.request_appointment, name='request_appointment'),
 ]

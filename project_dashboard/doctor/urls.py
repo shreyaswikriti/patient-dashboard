@@ -7,4 +7,6 @@ urlpatterns = [
     path('update_appointment/', views.update_appointment, name='update_appointment'),
     path('all_appointment/', views.all_appointment, name='all_appointment'),
     path('confirmed_appointment/', views.confirmed_appointment, name='confirmed_appointment'),
+    path('patient_treatment/<int:pk>', views.patient_treatment, name='patient_treatment'),
+    path('treatment_detail/<int:pk>',views.treatment_detail, name='treatment_detail'),
 ]
