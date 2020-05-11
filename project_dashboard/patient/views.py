@@ -5,6 +5,9 @@ from doctor.models import DoctorSpecialisation, DoctorProfile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import datetime
+from login_reg.views import home
+from django.contrib.auth import authenticate
+
 # Create your views here.
 import logging
 
@@ -95,3 +98,106 @@ def save_appoinment(request):
 		status=status)
 	messages.success(request, ("Your appointment has been made"))
 	return redirect('home')
+
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])	
+def patient_address(request):
+	logger.info('Saving address')
+	if request.method=='POST':
+		try:
+			address = request.POST['add']
+			city = request.POST['city']
+			district = request.POST['dist']
+			locality = request.POST['locality']
+			state = request.POST['state']
+			pincode = request.POST['pincode']
+			nationality = request.POST['nationality']
+			contact = request.POST['phone']
+		except:
+			logger.error("User address not created")
+		PatientAddress.objects.create(Address=address,
+			city=city,
+			district=district,
+			locality=locality,
+			state=state,
+			pincode=pincode,
+			nationality=nationality,
+			contactno=contact,
+			user=request.user)
+		logger.info("User address added")
+		messages.success(request,("You have added your address"))
+		return redirect('patient_profile')
+	else:
+		return render(request,'patient_address.html',{})
+
+	
+
+
+
+			  		
+		
+		
+		
+		
+		
+		
+		
+
+	
+
+
+	
+		
+	
+	
+
+	
+	
+	
+    
+
+
+       
+        	
+		        
+		        
+		        
+		        
+		        
+		    
+		    	
+	
+		
+		
+		
+		
+		
+		
+		
+		
+    
+   
+
+
+	
+	
+	
+		        
+		        
+		        
+		       
+		       
+		       
+		       
+	
+
+
+		
+
+    
+		
+    
+	
+	
