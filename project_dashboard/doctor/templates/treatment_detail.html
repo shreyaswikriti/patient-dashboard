@@ -18,14 +18,35 @@
     </tr>
   </thead>
  <tbody>
+    {% for treat in treatments %}
     <tr>
-      <th scope="row">{{treatment.doctor}}</th>
+       <td scope="row">{{treat.doctor}}</td>
+      <td>{{treat.diagnosis}}</td>
+      <td>{{treat.prescription}}</td>
+      <td>{{treat.active}}</td>
+    </tr>
+     {% endfor %}
+    <tr>
+      <td scope="row">{{treatment.doctor}}</td>
       <td>{{treatment.diagnosis}}</td>
       <td>{{treatment.prescription}}</td>
       <td>{{treatment.active}}</td>
     </tr>
   </tbody>
 </table>
+{% if yes %}
+<div class="container" id="reg">
+ <form method="POST" action="{% url 'edit_treatment' %}">
+     {% csrf_token %}
+   <div class="form-row">
+   <div class="col"><input type="text" id="diagnosis" name="diagnosis" class="form-control" placeholder="Edit Diagnosis"></div>
+      <div class="col"><input type="text" id="prescription" name="prescription" class="form-control" placeholder="Edit Prescription"></div>
+   <input type="hidden" name="treatment_id" value="{{treatment.id}}">
+</div>
+     <input class="btn btn-primary btnn" type="submit" value="Save">
+   </form>
+  </div>
+ {% endif %}
 <h3>Comments of this Treatment</h3>
  <table class="table table-hover">
   <thead>
@@ -35,16 +56,26 @@
       <th scope="col">Doctor</th>
     </tr>
   </thead>
-   {% for comment in comments %}
  <tbody>
+     {% for comment in comments %}
     <tr>
-      <th>{{ forloop.counter }}</th>
+      <td>{{ forloop.counter }}</td>
       <td>{{comment.comment}}</td>
-      <th scope="row">{{comment.doctor}}</th>
+      <td scope="row">{{comment.doctor}}</td>
     </tr>
+     {% endfor %}
   </tbody>
- {% endfor %}
 </table>
+<div class="container" id="reg">
+    <form method="POST">
+     {% csrf_token %}
+   <div class="form-row">
+   <div class="col"><input type="text" id="comment" name="comment" class="form-control" placeholder="Add your comment"></div>
+   <input type="hidden" name="treatment_id" value="{{treatment.id}}">
+</div>
+     <input class="btn btn-primary btnn" type="submit" value="Add Comment">
+   </form>
+ </div>
 
  
 

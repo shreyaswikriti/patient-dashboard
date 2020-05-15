@@ -40,10 +40,11 @@ class PatientAddress(models.Model):
 class PatientTreatment(models.Model):
 	diagnosis = models.CharField(max_length=1000)
 	prescription = models.TextField()
-	count = models.IntegerField()
+	count = models.IntegerField(null=True)
 	active = models.BooleanField()
+	parent_treatment = models.CharField(max_length=255, null=True)
 	last_edited = models.DateTimeField(auto_now_add=True)
-	rating = models.IntegerField()
+	rating = models.IntegerField(null=True)
 	patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
 	doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
 
@@ -59,9 +60,12 @@ class TreatmentComment(models.Model):
 
 STATUS = (('CONFIRMED', 'CONFIRMED'),
 	('REQUESTED', 'REQUESTED'),
-	('NA','NA'))
+	('NA','NA'),
+	('DONE','DONE'))
 class PatientAppointment(models.Model):
 	status = models.CharField(max_length=100, choices=STATUS)
+	treatmenttype=models.CharField(max_length=100, null=True)
+	comment = models.CharField(max_length=255, null=True)
 	appointment = models.DateTimeField(auto_now_add=False)
 	user = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
 	doctor =models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)

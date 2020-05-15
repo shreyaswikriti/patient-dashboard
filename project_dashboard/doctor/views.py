@@ -6,7 +6,10 @@ from .models import DoctorProfile, DoctorEducation, DoctorSpecialisation
 from patient.models import PatientTreatment, PatientAppointment
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from .utility import get_treatment_details, edit_treatment_detail
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from hospital.models import hospitalProfile
 # Create your views here.
 import logging
 
@@ -18,13 +21,13 @@ def doc_dash(request):
 	doctor = DoctorProfile.objects.filter(user=request.user).first()
 	if doctor is None:
 		logger.error("There is no doctor")
-		redirect('error')
+		return redirect('error')
 	patients = PatientTreatment.objects.filter(doctor=doctor).order_by('last_edited')
 	if patients is None:
 		logger.info("No patient is here treated by this doctor")
 	appointments = PatientAppointment.objects.filter(doctor=doctor,status='REQUESTED').order_by('timestamp')[:6]
 	count = PatientAppointment.objects.filter(doctor=doctor,status='REQUESTED').count();
-	context = {"patients": patients, 'appointments':appointments, 'count':count}
+	context = {"patients": patients, 'appointments':appointments, 'count':count, 'doctor':doctor}
 	return render(request, 'doctor_dashboard.html', context)
 
 
@@ -83,7 +86,9 @@ def edit_profile(request):
 	else:
 		# Edit = edit_profile.objects.filter(id=pk).first()
 		prof = DoctorProfile.objects.filter(user=request.user).first()
-		return render(request,'edit_profile.html',{'prof':prof})
+		hospital = hospitalProfile.objects.all()
+		context = {'prof': prof, 'hospital':hospital}
+		return render(request,'edit_profile.html', context)
 
 
 @login_required(login_url='home')
@@ -105,7 +110,7 @@ def update_appointment(request):
 	except:
 		logger.info("Invalide submition")
 		messages.error("Appointment updation failed")
-		redirect('home')
+		return redirect('home')
 	PatientAppointment.objects.filter(id=appointment_id).update(status=status)
 	messages.success(request, "You have successfully updated the appointments")
 	context ={}
@@ -134,13 +139,12 @@ def confirmed_appointment(request):
 
 
 
-
 @login_required(login_url='home')
 @allowed_roles(allowed_roles=['DOCTOR'])
 def patient_treatment(request, pk):
 	doctor = DoctorProfile.objects.filter(user=request.user).first()
 	treatmentd = PatientTreatment.objects.filter(id=pk).first()
-	treatments = PatientTreatment.objects.filter(patient=treatmentd.patient)
+	treatments = PatientTreatment.objects.filter(patient=treatmentd.patient, parent_treatment__isnull=True)
 	context = {'treatments':treatments, 'treatmentd':treatmentd}
 	return render(request, 'patient_treatment.html', context)
 
@@ -149,12 +153,59 @@ def patient_treatment(request, pk):
 @login_required(login_url='home')
 @allowed_roles(allowed_roles=['DOCTOR'])
 def treatment_detail(request, pk):
-	treatment = PatientTreatment.objects.filter(id=pk).first()
-	if treatment is None:
-		logger.error("Treatment does not exist")
-		redirect('error')
-	comments = TreatmentComment.objects.filter(treatment=treatment).order_by('timestamp')
-	if comments is None:
-		logger.info("No comments available")
-	context = {'comments':comments, 'treatment':treatment}
-	return render(request, 'treatment_detail.html', context)
+	if request.method=='POST':
+		treatment = PatientTreatment.objects.filter(id=pk).first()
+		doctor = DoctorProfile.objects.filter(user=request.user).first()
+		comments = request.POST['comment']
+		TreatmentComment.objects.create(comment=comments, treatment=treatment, doctor=doctor)
+		context = get_treatment_details(request, pk)
+		return render(request, 'treatment_detail.html', context)
+	else:
+		context = get_treatment_details(request, pk)
+		return render(request, 'treatment_detail.html', context)
+
+
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def edit_treatment(request):
+	if request.method=='POST':
+		diagnosis = request.POST['diagnosis']
+		prescription = request.POST['prescription']
+		treatment_id = request.POST['treatment_id']
+		doctor = DoctorProfile.objects.filter(user=request.user).first()
+		patient = PatientTreatment.objects.filter(id=treatment_id).first().patient
+		count = PatientTreatment.objects.filter(parent_treatment=treatment_id).order_by('-count').first()
+		if count is None:
+			edit_treatment_detail(request, count=1,
+				diagnosis=diagnosis, prescription=prescription, treatment_id=treatment_id,
+				patient=patient, doctor=doctor)
+		else:
+			logger.info("I am printing or not")
+			edit_treatment_detail(request, count=(count.count+1),
+				diagnosis=diagnosis, prescription=prescription, treatment_id=treatment_id,
+				patient=patient, doctor=doctor)
+		context = get_treatment_details(request, treatment_id)
+		return HttpResponseRedirect(reverse('treatment_detail', args=(treatment_id,)))
+
+
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def add_treatment(request, pk):
+	if request.method=='POST':
+		diagnosis = request.POST['diagnosis']
+		prescription =request.POST['prescription']
+		PatientAppointment.objects.filter(id=pk).update(status='DONE')
+		appointment = PatientAppointment.objects.filter(id=pk).first()
+		PatientTreatment.objects.create(doctor=appointment.doctor, patient=appointment.user, 
+			diagnosis=diagnosis, prescription=prescription, active=True)
+		treatment_id = PatientTreatment.objects.filter(doctor=appointment.doctor, patient=appointment.user, active=True).first().id
+		return HttpResponseRedirect(reverse('treatment_detail', args=(treatment_id,)))
+	else:
+		appointment = PatientAppointment.objects.filter(id=pk).first()
+		logger.info("Just checking")
+		context = {'appointment':appointment}
+		return render(request, 'add_treatment.html', context)

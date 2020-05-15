@@ -22,6 +22,7 @@
       <th scope="col" data-filter-control="select">Appointment Time</th>
       <th scope="col" data-filter-control="select">Gender</th>
       <th scope="col" data-filter-control="select">Status</th>
+      <th scope="col" data-filter-control="select"></th>
     </tr>
   </thead>
  <tbody>
@@ -32,6 +33,7 @@
       <td scope="row">{{appointment.appointment}}</td>
       <td scope="row">{{appointment.user.gender}}</td>
       <td scope="row">{{appointment.status}}</td>
+      <td scope="row"><button type="submit" class="btn btn-primary"><a class="link" href="{% url 'add_treatment' appointment.id %}">Give Prescription</a></button></td>
     </tr>
      {% endfor %}
   </tbody>

@@ -4,7 +4,7 @@
 {% block title %} Doctor Dashboard {% endblock %}
 {% block nav %}<a class="navbar-brand" href="" >Doctor Dashboard </a>{% endblock %}
 
-{%block nav2 %} <a class="nav-link" href="{% url 'doctor_profile' %}"> Doctor Profile </a>{% endblock %}
+{%block nav2 %} <a class="nav-link" href="{% url 'doctor_profile' %}"> {{doctor.firstName}} </a>{% endblock %}
 
         {% block nav3 %}<a class="nav-link notification" data-toggle="modal" data-target="#exampleModalCenter"> <span>Notification</span>
   <span class="badge">{{count}}</span> </a>{% endblock %}

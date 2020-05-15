@@ -3,6 +3,9 @@ from django.shortcuts import render, redirect
 from login_reg.decorators import allowed_roles
 from doctor.models import DoctorProfile
 from .models import hospitalProfile, hospitalAddress
+import logging
+
+logger = logging.getLogger(__name__)
 # Create your views here.
 
 @allowed_roles(allowed_roles=['HOSPITAL'])

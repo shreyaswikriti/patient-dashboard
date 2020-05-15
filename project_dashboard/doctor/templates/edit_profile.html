@@ -67,12 +67,17 @@
             <label  for="gender" class="col-md-4 control-label">GENDER</label>
         <div class="col-md-4 selectContainer">
             <div class="input-group">
-                <select name="gender" class="form-control selectpicker" id="gender" name="gender" placeholder="{{prof.gender}}" value="{{prof.gender}}">
-                    <option value="">Select the Gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                    <option>Others</option>
-                </select>
+                <select name="gender" class="form-control selectpicker" id="gender" name="gender" placeholder="{{prof.gender}}" >
+                    <option value="{{prof.gender}}">{{prof.gender}}</option>
+                   {% if prof.gender != "MALE" %}
+                    <option>MALE</option>
+                    {% endif %}
+                     {% if prof.gender != "FEMALE" %}
+                    <option>FEMALE</option>
+                    {% endif %}
+                    {% if prof.gender != "OTHERS" %}
+                    <option>OTHERS</option>
+                    {% endif %}                </select>
             </div>
         </div>
     </div>
@@ -86,10 +91,12 @@
         <div class="col">
              <label for="hospital" class="col-md-4 control-label">HOSPITAL</label>
         <select id="hospital1" name="hospital" class="form-control">
-    <option selected>Hospital</option>
+    <option selected>{{prof.hospital.name}}</option>
     {% if hospital %}
            {% for h in hospital %}
+             {% if h.name != prof.hospital.name %}
             <option value="{{h.id}}">{{h.name}}</option>
+                                {% endif %}
    {% endfor %}
     {% endif %}
       </select>  
@@ -111,7 +118,7 @@
             <label for="treatment" class="col-md-4 control-label">TREATMENT</label>
         <div class="col-md-6 inputGroupContainer">
             <div class="input-group">
-                <input type="text" class="form-control" id="treatment" name="treatment" placeholder="Enter the Treatment" value="spec.treatment">
+                <input type="text" class="form-control" id="treatment" name="treatment" placeholder="Enter the Treatment" value="{{spec.treatment}}">
             </div>
         </div>
     </div>
@@ -142,7 +149,7 @@
             <label class="col-md-4 control-label"></label>
         <div class="col-md-4">  <br>
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <button type="submit" class="btn btn-success"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp SUBMIT  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+            <button type="submit" class="btn btn-success"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Save  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
 
         </div>
     </div>

@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'project_dashboard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dump',
+        'NAME': 'eclinics',
         'USER': 'root',
         'PASSWORD': 'password',
         'HOST': 'localhost',

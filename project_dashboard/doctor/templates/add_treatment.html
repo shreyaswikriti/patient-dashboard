@@ -1,0 +1,28 @@
+{% extends 'hosp/base.html' %}
+
+
+
+{% block title %} Dashboard {% endblock %}
+{% block nav %}<a class="navbar-brand" href="" > Treatments </a>{% endblock %}
+
+{%block nav2 %} <a class="nav-link" href="{% url 'doc_dash' %}">Dashboard</a>{% endblock %}
+ {% block content %}
+<div class="container" id="reg">
+<form method="POST">
+     {% csrf_token %}
+   <div class="form-row">
+   <div class="col"><input type="text" id="first" name="Patient" value="Pat. {{appointment.user.firstName}}" class="form-control" placeholder="Patient"></div>
+   <div class="col"><input type="text" id="last" name="Doctor" class="form-control" value="Dr. {{appointment.doctor.firstName}}" placeholder="Doctor"></div>
+</div>
+  <div class="form-row">
+   <div class="col"><input type="text" id="diagnosis" name="diagnosis" value="" class="form-control" placeholder="Diagnosis"></div>
+</div>
+ <div class="form-row">
+   <div class="col"><input type="text" id="prescription" name="prescription" class="form-control" value="" placeholder="Prescription"></div>
+</div>
+
+     <input class="btn btn-primary btnn" type="submit" value="Save">
+</form>
+</div>
+ {% endblock %}
+

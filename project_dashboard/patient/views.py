@@ -21,7 +21,7 @@ def treatment_list(request):
 	if patient is None:
 		logger.error("Patient not found")
 		redirect('error')
-	treatments = PatientTreatment.objects.filter(patient=patient).order_by('last_edited')
+	treatments = PatientTreatment.objects.filter(patient=patient, parent_treatment__isnull=True).order_by('last_edited')
 	if treatments is None:
 		logger.info("Patient was never diagnised")
 	count = PatientAppointment.objects.filter(status='CONFIRMED', user=patient).order_by('appointment').count()
