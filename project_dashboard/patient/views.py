@@ -105,7 +105,7 @@ def save_appoinment(request):
 
 @login_required(login_url='home')
 @allowed_roles(allowed_roles=['PATIENT'])	
-def patient_address(request):
+def patient_address(request, pk):
 	logger.info('Saving address')
 	if request.method=='POST':
 		try:
@@ -119,7 +119,7 @@ def patient_address(request):
 			contact = request.POST['phone']
 		except:
 			logger.error("User address not created")
-		PatientAddress.objects.create(Address=address,
+		PatientAddress.objects.filter(id=pk).update(Address=address,
 			city=city,
 			district=district,
 			locality=locality,
@@ -132,7 +132,8 @@ def patient_address(request):
 		messages.success(request,("You have added your address"))
 		return redirect('patient_profile')
 	else:
-		return render(request,'patient_address.html',{})
+		Address = PatientAddress.objects.filter(id=pk).first()
+		return render(request,'patient_address.html',{'Address':Address})
  
 		   
 @login_required(login_url='home')

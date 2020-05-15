@@ -113,6 +113,5 @@ height: 20px;
 </div>
 
 {% endif %}
-
-<button type="button" id="" class="btn btn-secondary"> <a class="link" href="{% url 'patient_address' %}"> Edit</a></button>
+<button type="button" id="" class="btn btn-secondary"> <a class="link" href="{% url 'patient_address' details.id %}"> Edit</a></button>
 {% endblock %}

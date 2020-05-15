@@ -6,9 +6,9 @@ from django.contrib import messages
 import logging
 from .utility import *
 from .models import *
-from doctor.models import DoctorProfile
-from doctor.models import hospitalProfile
-from patient.models import PatientProfile
+from doctor.models import DoctorProfile 
+from hospital.models import hospitalProfile, hospitalAddress
+from patient.models import PatientProfile, PatientAddress
 from django.db import transaction
 from .decorators import unathenticated_user
 from datetime import datetime
@@ -113,6 +113,15 @@ def register_hospital(request):
 				name=hospitalName,
 				tyep=types,
 				user = request.user)
+			hospitalAddress.objects.create(Address='Null',
+					city='Null',
+					district='Null',
+					locality='Null',
+					state='Null',
+					pincode='Null',
+					nationality='Null',
+					contactno='Null',
+					user=request.user)
 			logger.info("Hospital Profile Created with a name " + hospitalName)
 			logger.info("User has been loggen in")
 			messages.success(request,('You have registered as a Hospital....'))
@@ -151,7 +160,15 @@ def register_patient(request):
 					gender=gender,
 					dob=temp_date,
 					user=request.user)
-
+			PatientAddress.objects.create(Address='Null',
+					city='Null',
+					district='Null',
+					locality='Null',
+					state='Null',
+					pincode='Null',
+					nationality='Null',
+					contactno='Null',
+					user=request.user)
 			logger.info("User has been loggen in")
 			messages.success(request,('You have registered as a Patient....'))
 			return redirect('home')
