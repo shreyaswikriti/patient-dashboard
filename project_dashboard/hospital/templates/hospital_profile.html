@@ -6,3 +6,113 @@
 
 {%block nav2 %} <a class="nav-link" href="{% url 'hosp_dash' %}"> Hospital Dashboard </a>{% endblock %}
 
+{% block content %}
+
+
+<style type="text/css">
+		.table td{ 
+		background-color: #E1F5FE;
+		border:1px solid #7f1f1f;
+			}
+			.table tbody tr:hover td, .table tbody tr:hover th {
+    background-color: lightblue;
+}
+.table{ font-color:#170213;
+	font-weight: bolder;
+font-size: 12px; 
+height: 20px;
+ }
+	</style>
+
+<div>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <h1>PROFILE</h1>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="width: 50%;" >HOSPITAL NAME</td>
+        
+        <td style="width: 50%;text-transform: uppercase;" >{{hdetail.name}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+<div>
+<table class="table table-hover">
+       <tr>
+        <td >REGISTRATION ID</td>
+        
+        <td>{{hdetail.registrationid}}</td>
+      
+        <td>DATE OF REGISTRATION</td>
+        
+        <td>{{hdetail.dateofreg}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% if hdetails %}
+<div>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <h1>ADDRESS</h1>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td >ADDRESS</td>
+        
+        <td>{{hdetails.Address}}</td>
+
+      
+        <td >CITY</td>
+        
+        <td>{{hdetails.city}}</td>
+
+      </tr>
+      <tr>
+        <td >DISTRICT</td>
+        
+        <td>{{hdetails.district}}</td>
+
+      
+        <td >LOCALITY</td>
+        
+        <td>{{hdetails.locality}}</td>
+
+      </tr>
+      
+      <tr>
+        <td>STATE</td>
+        
+        <td>{{hdetails.state}}</td>
+      
+        <td >PINCODE</td>
+        
+        <td>{{hdetails.pincode}}</td>
+
+      </tr>
+      <tr>
+        <td >NATIONALITY</td>
+        
+        <td>{{hdetails.nationality}}</td>
+
+     
+        <td >CONTACT NO</td>
+        
+        <td>{{hdetails.contactno}}</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{% endif %}
+<button type="button" id="" class="btn btn-secondary"> <a class="link" href="{% url 'patient_address' details.id %}"> Edit</a></button>
+{% endblock %}
+
