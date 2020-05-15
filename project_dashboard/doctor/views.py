@@ -38,17 +38,15 @@ def doctor_profile(request):
 		prof = DoctorProfile.objects.filter(user=request.user).first()
 		logger.info("Name:{}{} Dob:{} Gender:{} Hospital:{}".format(prof.firstName,prof.lastName,prof.dob,prof.gender,prof.hospital))
 
-		educ = DoctorEducation.objects.filter(doctor=prof).first()
-		logger.info("College:{} Degree:{}".format(educ.college,educ.degree))
+		educs = DoctorEducation.objects.filter(doctor=prof)
 
-		spec = DoctorSpecialisation.objects.filter(doctor=prof).first()
-		logger.info("Treatment:{}".format(spec.treatment))
+		specs = DoctorSpecialisation.objects.filter(doctor=prof)
 
 	except:
 		logger.error("Not found")
 
 
-	return render(request, 'doctor_profile.html', {"prof":prof,"educ":educ,"spec":spec})
+	return render(request, 'doctor_profile.html', {"prof":prof,"educs":educs,"specs":specs})
 
 
 @login_required(login_url='home')

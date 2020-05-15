@@ -41,7 +41,7 @@ height: 20px;
       </tr>
       <tr >
           <td><b>HOSPITAL</b></td>
-          <td>{{prof.hospital}}</td>
+          <td>{{prof.hospital.name}}</td>
       </tr>
   </table>
 </div>
@@ -57,10 +57,12 @@ height: 20px;
                     <b>DEGREE</b>
                 </td>
             </tr>
+              {% for educ in educs %}
             <tr>
                 <td>{{educ.college}}</td>
                 <td>{{educ.degree}}</td>
             </tr>
+            {% endfor %}
 
  </table>
 </div>
@@ -68,10 +70,12 @@ height: 20px;
     <div class="col-md-12 selectContainer">
         <table class="table table-hover">
             <h2>SPECIALIZATION</h2>
+            {% for spec in specs %}
             <tr>
                 <td style="width:50%;"><b>TREATMENT</b></td>
                 <td style="width:50%;">{{spec.treatment}}</td>
             </tr>
+            {% endfor %}
         </table>
     </div>
 
