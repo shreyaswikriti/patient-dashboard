@@ -20,4 +20,11 @@ def hosp_dash(request):
 
 @allowed_roles(allowed_roles=['HOSPITAL'])
 def hospital_profile(request):
-	return render(request, 'hospital_profile.html', {})
+	try:
+		hdetail=hospitalProfile.objects.filter(user=request.user).first()
+		logger.info("Name:{} registrationid: {} and dateofregistration: {}".format(hdetail.name, hdetail.registrationid, hdetail.dateofreg))
+		hdetails=hospitalAddress.objects.filter(user=request.user).first()
+		logger.info("Address:{} city:{} District: {} Locality: {} State: {} Pincode: {} Nationality: {} contactno:{}".format(hdetails.Address, hdetails.city, hdetails.district, hdetails.locality,hdetails.state,hdetails.pincode,hdetails.nationality,hdetails.contactno))
+	except:
+		logger.error("oject not found")
+	return render(request, 'hospital_profile.html', {"hdetail":hdetail,"hdetails":hdetails })
