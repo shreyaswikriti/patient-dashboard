@@ -109,6 +109,8 @@ def patient_address(request, pk):
 	logger.info('Saving address')
 	if request.method=='POST':
 		try:
+			first = request.POST['first']
+			last = request.POST['last']
 			address = request.POST['add']
 			city = request.POST['city']
 			district = request.POST['dist']
@@ -119,6 +121,8 @@ def patient_address(request, pk):
 			contact = request.POST['phone']
 		except:
 			logger.error("User address not created")
+		PatientProfile.objects.filter(user=request.user).update(firstName =first,
+			lastName=last)
 		PatientAddress.objects.filter(id=pk).update(Address=address,
 			city=city,
 			district=district,
@@ -132,8 +136,10 @@ def patient_address(request, pk):
 		messages.success(request,("You have added your address"))
 		return redirect('patient_profile')
 	else:
+		patient = PatientProfile.objects.filter(user=request.user).first()
 		Address = PatientAddress.objects.filter(id=pk).first()
-		return render(request,'patient_address.html',{'Address':Address})
+		context = {'patient':patient,'Address':Address}
+		return render(request,'patient_address.html',context)
  
 		   
 @login_required(login_url='home')

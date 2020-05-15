@@ -8,6 +8,16 @@
 <form method="POST">
      {% csrf_token %}
    <div style="padding-top:3%;">
+      <div class="form-row">
+          <div class="col">
+            <label class="control-label">FIRSTNAME</label>
+            <input type="text" class="form-control" name="first" id="first"  value="{{patient.firstName}}" required/>
+          </div>
+          <div class="col">
+            <label class="control-label">LASTNAME</label>
+            <input type="text" class="form-control" name="last" id="last" value="{{patient.lastName}}" required/ >
+          </div>
+        </div>
         <div class="form-row">
           <div class="col">
             <label class="control-label">ADDRESS</label>
