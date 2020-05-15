@@ -1,0 +1,155 @@
+
+{% extends 'hosp/base.html' %}
+
+
+{% block title %} Doctor Dashboard {% endblock %}
+{% block nav %}<a class="navbar-brand" href="" >Doctor Dashboard </a>{% endblock %}
+
+{%block nav2 %} <a class="nav-link" href="{% url 'doctor_profile' %}"> Doctor Profile </a>{% endblock %}
+
+
+{% block content %}
+
+	<style type="text/css">
+      .container td{ width: 50%;
+      background-color: #E1F5FE;
+      border:1px solid #7f1f1f;
+           }
+           .container tbody tr :hover td, .table tbody tr:hover td {
+            background-color: #C0C0C0;
+           }
+           .conatainer{ 
+           font-size: medium;
+            }
+          </style>
+
+<div>
+<h1> EDIT PROFILE </h1>
+<br>
+
+<div class="container">
+<form class="well form-horizontal" action="" method="post" id="edit form">
+    <fieldset>
+        <h2>GENERAL DETAILS</h2>
+<br>
+    <div class="form-row">
+        <div class="col">
+            <label for="firstName" class="col-md-4 control-label">FIRST NAME</label>
+        <div class="col-md-12 inputGroupContainer">
+            <div class="input-group">
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{prof.firstName}}" value="{{prof.firstName}}">
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+            <label for="dob" class="col-md-4 control-label">DATE OF BIRTH</label>
+        <div class="col-md-4 inputGroupContainer">
+            <div class="input-group">
+                <input type="date" class="form-control" id="dob" name="dob" placeholder="{{prof.dob}}" value="{{prof.dob}}">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="form-row">
+        <div class="col">
+            <label for="lastName" class="col-md-4 control-label">Lastname</label>
+        <div class="col-md-12 inputGroupContainer">
+            <div class="input-group">
+                <input type="text"  class="form-control" id="lastName" name="lastName" placeholder="{{prof.lastName}}" value="{{prof.lastName}}">
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+            <label  for="gender" class="col-md-4 control-label">GENDER</label>
+        <div class="col-md-4 selectContainer">
+            <div class="input-group">
+                <select name="gender" class="form-control selectpicker" id="gender" name="gender" placeholder="{{prof.gender}}" value="{{prof.gender}}">
+                    <option value="">Select the Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Others</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    
+
+     
+     <div class="form-group">
+        <div class="col">
+             <label for="hospital" class="col-md-4 control-label">HOSPITAL</label>
+        <select id="hospital1" name="hospital" class="form-control">
+    <option selected>Hospital</option>
+    {% if hospital %}
+           {% for h in hospital %}
+            <option value="{{h.id}}">{{h.name}}</option>
+   {% endfor %}
+    {% endif %}
+      </select>  
+       </div>
+           
+       <!-- <div class="col-md-6 inputGroupContainer">
+            <div class="input-group">
+                <input type="text" class="form-control" id="hospital"name="hsopital" placeholder="{{prof.hospital}}" value="{{prof.hospital}}">
+            </div>
+        </div>-->
+    </div>
+
+    
+
+<br>
+<h2>SPECIALIZATION</h2>
+        <br>
+    <div class="form-group">
+            <label for="treatment" class="col-md-4 control-label">TREATMENT</label>
+        <div class="col-md-6 inputGroupContainer">
+            <div class="input-group">
+                <input type="text" class="form-control" id="treatment" name="treatment" placeholder="Enter the Treatment" value="spec.treatment">
+            </div>
+        </div>
+    </div>
+    <br>
+
+<h2>EDUCATION</h2>
+        <br>
+      <div class="form-row">
+        <div class="col">
+            <label for="college" class="col-md-4 control-label">COLLEGE</label>
+        <div class="col-md-12 inputGroupContainer">
+            <div class="input-group">
+                <input type="text" class="form-control" id="college" name="college" placeholder="Enter the College" value="{{educ.college}}">
+            </div>
+        </div>
+    </div>
+
+         <div class="col">
+            <label for="degree" class="col-md-4 control-label">DEGREE</label>
+        <div class="col-md-12 inputGroupContainer">
+            <div class="input-group">
+                <input type="text" class="form-control" id="degree" name="degree" placeholder="Enter the Degree" value="{{educ.degree}}">
+            </div>
+        </div>
+    </div>
+</div>
+      <div class="form-group">
+            <label class="col-md-4 control-label"></label>
+        <div class="col-md-4">  <br>
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button type="submit" class="btn btn-success"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp SUBMIT  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+
+        </div>
+    </div>
+
+    </fieldset>
+</form>
+</div>
+</div>
+
+{% endblock %}

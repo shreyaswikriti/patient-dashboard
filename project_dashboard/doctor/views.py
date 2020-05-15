@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from login_reg.decorators import allowed_roles
 from .models import DoctorProfile, DoctorEducation
 from patient.models import PatientTreatment, PatientAppointment, TreatmentComment
+from .models import DoctorProfile, DoctorEducation, DoctorSpecialisation
+from patient.models import PatientTreatment, PatientAppointment
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -29,8 +31,59 @@ def doc_dash(request):
 
 # @allowed_roles(allowed_roles=['DOCTOR'])
 def doctor_profile(request):
+	try:
+		prof = DoctorProfile.objects.filter(user=request.user).first()
+		logger.info("Name:{}{} Dob:{} Gender:{} Hospital:{}".format(prof.firstName,prof.lastName,prof.dob,prof.gender,prof.hospital))
 
-	return render(request, 'doctor_profile.html', {})
+		educ = DoctorEducation.objects.filter(doctor=prof).first()
+		logger.info("College:{} Degree:{}".format(educ.college,educ.degree))
+
+		spec = DoctorSpecialisation.objects.filter(doctor=prof).first()
+		logger.info("Treatment:{}".format(spec.treatment))
+
+	except:
+		logger.error("Not found")
+
+
+	return render(request, 'doctor_profile.html', {"prof":prof,"educ":educ,"spec":spec})
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def edit_profile(request):
+	logger.info('')
+	if request.method=='POST':
+		try:
+			firstName = request.POST['firstName']
+			lastName = request.POST['lastName']
+			dob = request.POST['dob']
+			gender = request.POST['gender']
+			hospital = request.POST['hospital']
+			
+		except:
+			logger.error("None")
+		DoctorProfile.objects.filter(user=request.user).update(
+			firstName=firstName,
+			lastName=lastName,
+			dob=dob,
+			gender=gender,
+			hospital=hospital,
+			user=request.user)
+		profile = DoctorProfile.objects.filter(user=request.user).first()
+		DoctorEducation.objects.filter(doctor=profile).update(
+			college=college,
+			degree=degree,
+			user=request.user)
+		DoctorSpecialisation.objects.filter(doctor=profile).update(
+			treatment=treatment,
+			user=request.user)
+		logger.info("Profile edited")
+		messages.success(request,("Your profile has be edited"))
+		return redirect('doctor_profile')
+	else:
+		# Edit = edit_profile.objects.filter(id=pk).first()
+		prof = DoctorProfile.objects.filter(user=request.user).first()
+		return render(request,'edit_profile.html',{'prof':prof})
 
 
 @login_required(login_url='home')
