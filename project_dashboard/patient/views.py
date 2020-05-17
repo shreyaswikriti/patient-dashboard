@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from login_reg.decorators import allowed_roles
 from .models import PatientProfile, PatientTreatment, TreatmentComment, PatientAppointment, PatientAddress
-from doctor.models import DoctorSpecialisation, DoctorProfile
+from doctor.models import DoctorSpecialisation, DoctorProfile, DoctorEducation
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import datetime
@@ -167,3 +167,26 @@ def all_appointments(request):
 	appointments = PatientAppointment.objects.filter(user=patient).order_by('appointment')
 	context = {'appointments':appointments}
 	return render(request, 'all_appointments.html', context)
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])
+def doc_profile(request, pk):
+	try:
+		prof = DoctorProfile.objects.filter(id=pk).first()
+		educs = DoctorEducation.objects.filter(doctor=prof)
+		specs = DoctorSpecialisation.objects.filter(doctor=prof)
+	except:
+		logger.error("object not found")
+	context = {'prof':prof,'educs':educs,'specs':specs}
+	return render(request,'doc_profile.html',context)
+
+
+
+		
+
+	    
+	
+	
+	
+		
+	

@@ -20,7 +20,7 @@
   </thead>
  <tbody>
     <tr>
-      <th scope="row">{{treatment.doctor}}</th>
+      <th scope="row"><a class="link" style="color: black;"href="{% url 'doc_profile'  treatment.doctor.id  %}">{{treatment.doctor}}</a></th>
       <td>{{treatment.diagnosis}}</td>
       <td>{{treatment.prescription}}</td>
       <td>{{treatment.active}}</td>
@@ -41,7 +41,7 @@
     <tr>
       <th>{{ forloop.counter }}</th>
       <td>{{comment.comment}}</td>
-      <th scope="row">{{comment.doctor}}</th>
+     <th scope="row"><a class="link" style="color: black;"href="{% url 'doc_profile'  comment.doctor.id  %}">{{comment.doctor}}</a></th>
     </tr>
   </tbody>
  {% endfor %}
