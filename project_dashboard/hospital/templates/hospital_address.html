@@ -1,0 +1,81 @@
+
+{% extends 'hosp/base.html'%}
+
+{% block title %} Hospital Detail {% endblock %}
+
+{% block navbar %}
+<a class="navbar-brand">Hospital Address Registration</a>
+{% endblock %}
+
+{% block content %}
+<div class="container" id="reg">
+  <form method="POST">
+    {% csrf_token %}
+    <div style="padding-top:3%;">
+      <div class="form-row">
+        <div class="col">
+          <label class="control-label">NAME</label>
+          <input type="text" class="form-control" name="name" id="name" value="{{hospital.name}}" required />
+        </div>
+        <div class="col-6">
+          <label class="control-label">REGISTRATION ID</label>
+          <input type="text" class="form-control" name="registrationid" id="registrationid" value="{{hospital.registrationid}}" required/>
+        </div>
+        <div class="col-6">
+          <label class="control-label">DATE OF REGISTRATION</label>
+          <input type="text" class="form-control" name="dateofregistration" id="dateofregistration" value="{{hospital.dateofregistration}}" required/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <label class="control-label">ADDRESS</label>
+          <input type="text" class="form-control" name="add" id="add" value="{{Address.Address}}" required />
+        </div>
+        <div class="col">
+          <label class="control-label">CITY</label>
+          <input type="text" class="form-control" name="city" id="city" value="{{Address.city}}" required/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <label class="control-label">DISTRICT</label>
+          <input type="text" class="form-control" name="dist" id="dist" value="{{Address.district}}" required />
+        </div>
+
+        <div class="col">
+          <label class="control-label">LOCALITY</label>
+          <input type="text" class="form-control" id="locality" name="locality" value="{{Address.locality}}" required/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <label class="control-label">STATE</label>
+          <input type="text" class="form-control" id="state" name="state" value="{{Address.state}}" required/>
+        </div>
+        <div class="col">
+          <label class="control-label">PIN CODE</label>
+          <input class="form-control" name="pincode" type="tel" inputmode="numeric" placeholder="000000" value="{{Address.pincode}}" pattern="[0-9]{6}" maxlength="6" required />
+
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <label class="control-label">NATIONALITY</label>
+          <input type="text" class="form-control" id="nationality" name="nationality" value="{{Address.nationality}}" required />
+        </div>
+        <div class="col">
+          <label class="control-label">CONTACT NO</label>
+          <input class="form-control" type="tel" name="phone" id="phone" placeholder="9100000000" value="{{Address.contactno}}" pattern="[0-9]{10}" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <input class="btn btn-secondary btnn" type="submit" value="SAVE">
+      </div>
+
+    </div>
+</div>
+</form>
+</div>
+
+{% endblock %}
