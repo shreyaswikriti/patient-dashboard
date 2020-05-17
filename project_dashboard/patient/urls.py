@@ -12,4 +12,6 @@ urlpatterns = [
     path('conf_appointment/', views.conf_appointment, name='conf_appointment'),
     path('all_appointments/', views.all_appointments, name='all_appointments'),
     path('request_appointment/', views.request_appointment, name='request_appointment'),
+    path('doc_profile/<int:pk>', views.doc_profile, name='doc_profile')
+
 ]

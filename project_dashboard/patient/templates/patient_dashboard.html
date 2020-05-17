@@ -26,7 +26,7 @@
  <tbody>
     <tr>
       <th>{{ forloop.counter }}</th>
-      <th scope="row">{{treatment.doctor}}</th>
+     <th scope="row"><a class="link" style="color: black;"href="{% url 'doc_profile'  treatment.doctor.id  %}">{{treatment.doctor}}</a></th>
       <td>{{treatment.diagnosis}}</td>
       <td>{{treatment.prescription}}</td>
       <td>{{treatment.active}}</td>
