@@ -31,7 +31,8 @@
       <td>{{r.doctor.gender}}</td>
       <td>{{r.doctor.hospital.name}}</td>
      <td> <form action="{% url 'appointment' %}" method="POST"> 
-     {%csrf_token%} <input type="hidden" id="custId" name="doctor" value="{{r.doctor.id}}">
+     {%csrf_token%} 
+     <input type="hidden" name="treatment" value={{r.treatment}}><input type="hidden" id="custId" name="doctor" value="{{r.doctor.id}}">
 <button type="submit" class="btn btn-primary">Take Appointment</button></td></form>
     </tr>
   </tbody>

@@ -94,10 +94,11 @@ def all_doctor(request):
 @allowed_roles(allowed_roles=['PATIENT'])
 def make_appointment(request):
 	doc = request.POST['doctor']
+	treatments = request.POST['treatment']
 	logger.info("Doctor with id {} got request for appointment".format(doc))
 	doctor = DoctorProfile.objects.filter(id=doc).first()
 	treatment = DoctorSpecialisation.objects.filter(doctor=doctor)
-	context = {'doctor':doctor, 'treatment':treatment}
+	context = {'doctor':doctor, 'treatment':treatment, 'treatments':treatments}
 	return render(request, 'appointment.html', context)
 
 
@@ -109,6 +110,7 @@ def save_appoinment(request):
 		doc = request.POST['doc_id']
 		treatment = request.POST['treatment']
 		appointmenttime = request.POST['appointmenttime']
+		remarks = request.POST['remarks']
 		status =  request.POST['status'].upper()
 		logger.info('Requested for the appoinmenttime {} {} {} {}'.format(doc, appointmenttime, treatment, status))
 		temp_date = datetime.strptime(appointmenttime, "%m/%d/%Y").date()
@@ -120,7 +122,7 @@ def save_appoinment(request):
 	PatientAppointment.objects.create(doctor=doctor,
 		user=patient,
 		appointment=temp_date,
-		status=status)
+		status=status, comment=remarks)
 	messages.success(request, ("Your appointment has been made"))
 	return redirect('home')
 

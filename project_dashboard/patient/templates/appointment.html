@@ -17,7 +17,7 @@
 <div class="form-row">
 	 <div class="col">
         <select id="hospital1" name="treatment" class="form-control">
-    <option selected>Treatment Type</option>
+    <option selected>{{treatments|upper}}</option>
     {% if treatment %}
            {% for t in treatment %}
             <option>{{t.treatment|upper}}</option>
@@ -27,7 +27,13 @@
        <div class="col">
       <input type="text" id="appointmenttime" name="appointmenttime" class="form-control datepicker" placeholder="Appointment Time">
    </div>
+   
 </div>
+<div class="form-row">
+  <div class="col">
+      <input type="text" id="remarks" name="remarks" class="form-control" placeholder="Remarks">
+   </div>
+ </div>
    	<input type="hidden" name="status" value="REQUESTED">
      <input class="btn btn-primary btnn" type="submit" value="Request Appointment">
    </form>

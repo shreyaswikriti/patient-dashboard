@@ -5,6 +5,8 @@
 {% block nav %}<a class="navbar-brand" href="" >Confirmed</a>{% endblock %}
 
 {%block nav3 %} <a class="nav-link" href="{% url 'request_appointment' %}"> Requested </a>{% endblock %}
+{%block search%} {% url 'doctor_search' %}{%endblock%}
+
 
 {%block nav2 %} <a class="nav-link" href="{% url 'all_appointments' %}"> All Appointment </a>{% endblock %}
 
@@ -19,7 +21,7 @@
   <thead>
     <tr>
       <th scope="col">No.</th>
-      <th scope="col" data-filter-control="input">Patient</th>
+      <th scope="col" data-filter-control="input">Doctor</th>
       <th scope="col" data-filter-control="select">Appointment Time</th>
       <th scope="col" data-filter-control="select">Gender</th>
       <th scope="col" data-filter-control="select">Status</th>
@@ -29,7 +31,7 @@
  	   {% for appointment in appointments %}
     <tr>
       <td scope="row">{{ forloop.counter }}</td>
-      <td scope="row">{{appointment.user.firstName}}</td>
+      <td scope="row"><a class="link" style="color: black;"href="{% url 'doc_profile'  appointment.doctor.id  %}">{{appointment.doctor.firstName}}</a></td>
       <td scope="row">{{appointment.appointment}}</td>
       <td scope="row">{{appointment.user.gender}}</td>
       <td scope="row">{{appointment.status}}</td>

@@ -11,8 +11,11 @@
 <form method="POST">
      {% csrf_token %}
    <div class="form-row">
-   <div class="col"><input type="text" id="first" name="Patient" value="Pat. {{appointment.user.firstName}}" class="form-control" placeholder="Patient"></div>
-   <div class="col"><input type="text" id="last" name="Doctor" class="form-control" value="Dr. {{appointment.doctor.firstName}}" placeholder="Doctor"></div>
+   <div class="col"><input type="text" id="first" name="Patient" value="Pat. {{appointment.user.firstName}}" class="form-control"  disabled placeholder="Patient"></div>
+   <div class="col"><input type="text" id="last" name="Doctor" class="form-control" value="Dr. {{appointment.doctor.firstName}}" disabled placeholder="Doctor"></div>
+</div>
+ <div class="form-row">
+   <div class="col"><input type="text" id="remarks" name="remarks" value="{{appointment.comment}}" class="form-control" disabled placeholder="Diagnosis"></div>
 </div>
   <div class="form-row">
    <div class="col"><input type="text" id="diagnosis" name="diagnosis" value="" class="form-control" placeholder="Diagnosis"></div>
