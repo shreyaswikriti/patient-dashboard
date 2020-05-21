@@ -18,5 +18,5 @@ urlpatterns = [
     path('add_spec/', views.add_spec, name='add_spec'),
     path('delete_spec/<int:pk>', views.delete_spec, name='delete_spec'),
     path('delete_college/<int:pk>', views.delete_college, name='delete_college'),
+    path('pat_profile/<int:pk>', views.pat_profile, name='pat_profile'),
 ]
-
