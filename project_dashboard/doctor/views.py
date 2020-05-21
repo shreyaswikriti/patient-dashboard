@@ -10,6 +10,7 @@ from .utility import get_treatment_details, edit_treatment_detail
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from hospital.models import hospitalProfile
+from datetime import datetime
 # Create your views here.
 import logging
 
@@ -57,27 +58,19 @@ def edit_profile(request):
 		try:
 			firstName = request.POST['firstName']
 			lastName = request.POST['lastName']
-			dob = request.POST['dob']
+			bday = request.POST['bday']
 			gender = request.POST['gender']
-			hospital = request.POST['hospital']
-			
+			hospital_id = request.POST['hospital']
+			temp_date = datetime.strptime(bday, "%m/%d/%Y").date()	
 		except:
 			logger.error("None")
+		hospital = hospitalProfile.objects.filter(id=hospital_id).first()
 		DoctorProfile.objects.filter(user=request.user).update(
 			firstName=firstName,
 			lastName=lastName,
-			dob=dob,
+			dob=temp_date,
 			gender=gender,
-			hospital=hospital,
-			user=request.user)
-		profile = DoctorProfile.objects.filter(user=request.user).first()
-		DoctorEducation.objects.filter(doctor=profile).update(
-			college=college,
-			degree=degree,
-			user=request.user)
-		DoctorSpecialisation.objects.filter(doctor=profile).update(
-			treatment=treatment,
-			user=request.user)
+			hospital=hospital)
 		logger.info("Profile edited")
 		messages.success(request,("Your profile has be edited"))
 		return redirect('doctor_profile')
@@ -85,8 +78,72 @@ def edit_profile(request):
 		# Edit = edit_profile.objects.filter(id=pk).first()
 		prof = DoctorProfile.objects.filter(user=request.user).first()
 		hospital = hospitalProfile.objects.all()
-		context = {'prof': prof, 'hospital':hospital}
+		educs = DoctorEducation.objects.filter(doctor=prof)
+		specs = DoctorSpecialisation.objects.filter(doctor=prof)
+		context = {'prof': prof, 'hospital':hospital, 'specs':specs, 'educs':educs}
 		return render(request,'edit_profile.html', context)
+
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def update_specialisation(request, pk):
+	spec = request.POST['treatment']
+	logger.info("Just"+spec)
+	DoctorSpecialisation.objects.filter(id=pk).update(treatment=spec)
+	messages.success(request, 'Your Specialisation has been updated')
+	return redirect('edit_profile')
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def update_college(request, pk):
+	college = request.POST['college']
+	degree = request.POST['degree']
+	try:
+		DoctorEducation.objects.filter(id=pk).update(college=college,
+			degree=degree)
+		messages.success(request, 'Your college has been updated')
+	except:
+		messages.error('Your college update is failed')
+	return redirect('edit_profile')
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def add_college(request):
+	if request.method=='POST':
+		degree = request.POST['degree']
+		college = request.POST['college']
+		prof = DoctorProfile.objects.filter(user=request.user).first()
+		DoctorEducation.objects.create(degree=degree, college=college, doctor=prof)
+		hospital = hospitalProfile.objects.all()
+		educs = DoctorEducation.objects.filter(doctor=prof)
+		specs = DoctorSpecialisation.objects.filter(doctor=prof)
+		messages.success(request, 'You have added your college')
+		context = {'prof': prof, 'hospital':hospital, 'specs':specs, 'educs':educs}
+		return render(request,'edit_profile.html', context)
+	else:
+		context = {}
+		return render(request, 'add_degree.html', context)
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def add_spec(request):
+	if request.method == 'POST':
+		spec = request.POST['treatment']
+		prof = DoctorProfile.objects.filter(user=request.user).first()
+		DoctorSpecialisation.objects.create(doctor=prof, treatment=spec)
+		hospital = hospitalProfile.objects.all()
+		educs = DoctorEducation.objects.filter(doctor=prof)
+		specs = DoctorSpecialisation.objects.filter(doctor=prof)
+		messages.success(request, 'You have added your Specialisation')
+		context = {'prof': prof, 'hospital':hospital, 'specs':specs, 'educs':educs}
+		return render(request,'edit_profile.html', context)
+	else:
+		context = {}
+		return render(request, 'add_spec.html', context)
+
 
 
 @login_required(login_url='home')
@@ -131,8 +188,6 @@ def confirmed_appointment(request):
 	appointments = PatientAppointment.objects.filter(doctor=doctor, status="CONFIRMED")
 	context = {'appointments': appointments}
 	return render(request, 'confirmed_appointment.html', context)
-
-
 
 
 
