@@ -116,12 +116,8 @@ def add_college(request):
 		college = request.POST['college']
 		prof = DoctorProfile.objects.filter(user=request.user).first()
 		DoctorEducation.objects.create(degree=degree, college=college, doctor=prof)
-		hospital = hospitalProfile.objects.all()
-		educs = DoctorEducation.objects.filter(doctor=prof)
-		specs = DoctorSpecialisation.objects.filter(doctor=prof)
 		messages.success(request, 'You have added your college')
-		context = {'prof': prof, 'hospital':hospital, 'specs':specs, 'educs':educs}
-		return render(request,'edit_profile.html', context)
+		return redirect('edit_profile')
 	else:
 		context = {}
 		return render(request, 'add_degree.html', context)
@@ -134,17 +130,29 @@ def add_spec(request):
 		spec = request.POST['treatment']
 		prof = DoctorProfile.objects.filter(user=request.user).first()
 		DoctorSpecialisation.objects.create(doctor=prof, treatment=spec)
-		hospital = hospitalProfile.objects.all()
-		educs = DoctorEducation.objects.filter(doctor=prof)
-		specs = DoctorSpecialisation.objects.filter(doctor=prof)
 		messages.success(request, 'You have added your Specialisation')
-		context = {'prof': prof, 'hospital':hospital, 'specs':specs, 'educs':educs}
-		return render(request,'edit_profile.html', context)
+		return redirect('edit_profile')
 	else:
 		context = {}
 		return render(request, 'add_spec.html', context)
 
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def delete_spec(request, pk):
+	spec = DoctorSpecialisation.objects.filter(id=pk).first().treatment
+	DoctorSpecialisation.objects.filter(id=pk).delete()
+	messages.success(request, 'You have deleted your {} Specialisation'.format(spec))	
+	context = {}
+	return redirect('edit_profile')
 
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def delete_college(request, pk):
+	college = DoctorEducation.objects.filter(id=pk).first().college
+	DoctorEducation.objects.filter(id=pk).delete()
+	messages.success(request, 'You have deleted your {} college'.format(college))
+	context = {}
+	return redirect('edit_profile')
 
 @login_required(login_url='home')
 @allowed_roles(allowed_roles=['DOCTOR'])
