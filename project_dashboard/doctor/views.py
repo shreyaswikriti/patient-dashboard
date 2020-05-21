@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from login_reg.decorators import allowed_roles
 from .models import DoctorProfile, DoctorEducation
-from patient.models import PatientTreatment, PatientAppointment, TreatmentComment
+from patient.models import PatientTreatment, PatientAppointment, TreatmentComment, PatientProfile, PatientAddress
 from .models import DoctorProfile, DoctorEducation, DoctorSpecialisation
 from patient.models import PatientTreatment, PatientAppointment
 from django.contrib.auth.decorators import login_required
@@ -60,7 +60,7 @@ def edit_profile(request):
 			dob = request.POST['dob']
 			gender = request.POST['gender']
 			hospital = request.POST['hospital']
-			
+
 		except:
 			logger.error("None")
 		DoctorProfile.objects.filter(user=request.user).update(
@@ -198,7 +198,7 @@ def add_treatment(request, pk):
 		prescription =request.POST['prescription']
 		PatientAppointment.objects.filter(id=pk).update(status='DONE')
 		appointment = PatientAppointment.objects.filter(id=pk).first()
-		PatientTreatment.objects.create(doctor=appointment.doctor, patient=appointment.user, 
+		PatientTreatment.objects.create(doctor=appointment.doctor, patient=appointment.user,
 			diagnosis=diagnosis, prescription=prescription, active=True)
 		treatment_id = PatientTreatment.objects.filter(doctor=appointment.doctor, patient=appointment.user, active=True).first().id
 		return HttpResponseRedirect(reverse('treatment_detail', args=(treatment_id,)))
@@ -207,3 +207,14 @@ def add_treatment(request, pk):
 		logger.info("Just checking")
 		context = {'appointment':appointment}
 		return render(request, 'add_treatment.html', context)
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['DOCTOR'])
+def pat_profile(request, pk):
+	try:
+		detail=PatientProfile.objects.filter(id=pk).first()
+		details=PatientAddress.objects.filter(id=pk).first()
+	except:
+		logger.error("Not found")
+	return render(request, 'pat_profile.html', {"detail":detail,"details":details })

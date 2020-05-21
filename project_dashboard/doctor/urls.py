@@ -12,4 +12,5 @@ urlpatterns = [
     path('edit_profile/',views.edit_profile, name='edit_profile'),
     path('edit_treatment/', views.edit_treatment, name='edit_treatment'),
     path('add_treatment/<int:pk>', views.add_treatment, name='add_treatment'),
+    path('pat_profile/<int:pk>', views.pat_profile, name='pat_profile'),
 ]

@@ -26,7 +26,7 @@
  	   {% for appointment in appointments %}
     <tr>
       <th>{{ forloop.counter }}</th>
-      <th scope="row">{{appointment.user.firstName}}</th>
+      <th scope="row"><a style="color: black;" href="{%url 'pat_profile' appointment.user.id %}">{{appointment.user.firstName}}</a></th>
       <td>{{appointment.appointment}}</td>
       <td>{{appointment.user.gender}}</td>
       <td>{{appointment.status}}</td>
