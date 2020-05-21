@@ -82,6 +82,14 @@ def doctor_search(request):
 	context = {'rs':rs}
 	return render(request, 'doctor_search.html', context)
 
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['PATIENT'])
+def all_doctor(request):
+	rs = DoctorSpecialisation.objects.all()
+	context = {'rs':rs}
+	return render(request, 'doctor_search.html', context)
+
 @login_required(login_url='home')
 @allowed_roles(allowed_roles=['PATIENT'])
 def make_appointment(request):
