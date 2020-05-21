@@ -47,6 +47,27 @@
  {% endfor %}
 </table>
 
- 
+
+<div class="container">
+<h2>GIVE RATTING</h2>
+
+<form method="POST" action="{% url 'patient_detail'  treatment.id  %}">
+  {% csrf_token %}
+<div class="form-row">
+   <div class="col">
+      <select id="" name="quantity" class="form-control">
+        <option selected>Rate</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+         </select>
+   </div>
+</div>   
+<br><input type="submit" value="submit">
+</form>
+ </div>
+
 
  {% endblock %}

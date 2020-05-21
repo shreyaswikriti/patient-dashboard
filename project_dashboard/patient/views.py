@@ -7,6 +7,8 @@ from django.contrib import messages
 from datetime import datetime
 from login_reg.views import home
 from django.contrib.auth import authenticate
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 # Create your views here.
 import logging
@@ -48,15 +50,28 @@ def patient_profile(request):
 @login_required(login_url='home')
 @allowed_roles(allowed_roles=['PATIENT'])
 def patient_detail(request, pk):
-	treatment = PatientTreatment.objects.filter(id=pk).first()
-	if treatment is None:
-		logger.error("Treatment does not exist")
-		redirect('error')
-	comments = TreatmentComment.objects.filter(treatment=treatment).order_by('timestamp')
-	if comments is None:
-		logger.info("No comments available")
-	context = {'comments':comments, 'treatment':treatment}
-	return render(request, 'patient_detail.html', context)
+	if request.method=='POST':
+		try:
+			rate = int(request.POST['quantity'])
+		except:
+			logger.error("ratting has not been submitted")
+		PatientTreatment.objects.filter(id=pk).update(rating=rate)
+		rating = PatientTreatment.objects.filter(id=pk).first().rating
+		messages.success(request,("You have added {} rating".format(rating)))
+		return HttpResponseRedirect(reverse('patient_detail', args=(pk,)))
+	else:
+		treatment = PatientTreatment.objects.filter(id=pk).first()
+		if treatment is None:
+			logger.error("Treatment does not exist")
+			redirect('error')
+		comments = TreatmentComment.objects.filter(treatment=treatment).order_by('timestamp')
+		if comments is None:
+			logger.info("No comments available")
+		context = {'comments':comments, 'treatment':treatment}
+		return render(request, 'patient_detail.html', context)
+
+
+	
 
 
 @login_required(login_url='home')
