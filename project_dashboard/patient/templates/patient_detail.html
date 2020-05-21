@@ -20,7 +20,7 @@
   </thead>
  <tbody>
     <tr>
-      <th scope="row">{{treatment.doctor}}</th>
+      <th scope="row"><a class="link" style="color: black;"href="{% url 'doc_profile'  treatment.doctor.id  %}">{{treatment.doctor}}</a></th>
       <td>{{treatment.diagnosis}}</td>
       <td>{{treatment.prescription}}</td>
       <td>{{treatment.active}}</td>
@@ -41,12 +41,33 @@
     <tr>
       <th>{{ forloop.counter }}</th>
       <td>{{comment.comment}}</td>
-      <th scope="row">{{comment.doctor}}</th>
+     <th scope="row"><a class="link" style="color: black;"href="{% url 'doc_profile'  comment.doctor.id  %}">{{comment.doctor}}</a></th>
     </tr>
   </tbody>
  {% endfor %}
 </table>
 
- 
+
+<div class="container">
+<h2>GIVE RATTING</h2>
+
+<form method="POST" action="{% url 'patient_detail'  treatment.id  %}">
+  {% csrf_token %}
+<div class="form-row">
+   <div class="col">
+      <select id="" name="quantity" class="form-control">
+        <option selected>Rate</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+         </select>
+   </div>
+</div>   
+<br><input type="submit" value="submit">
+</form>
+ </div>
+
 
  {% endblock %}

@@ -12,5 +12,11 @@ urlpatterns = [
     path('edit_profile/',views.edit_profile, name='edit_profile'),
     path('edit_treatment/', views.edit_treatment, name='edit_treatment'),
     path('add_treatment/<int:pk>', views.add_treatment, name='add_treatment'),
+    path('update_specialisation/<int:pk>', views.update_specialisation, name='update_specialisation'),
+    path('update_college/<int:pk>', views.update_college, name='update_college'),
+    path('add_college/', views.add_college, name='add_college'),
+    path('add_spec/', views.add_spec, name='add_spec'),
+    path('delete_spec/<int:pk>', views.delete_spec, name='delete_spec'),
+    path('delete_college/<int:pk>', views.delete_college, name='delete_college'),
     path('pat_profile/<int:pk>', views.pat_profile, name='pat_profile'),
 ]

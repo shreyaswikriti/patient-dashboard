@@ -3,9 +3,11 @@
 
 {% block title %} Hospital Detail {% endblock %}
 
-{% block navbar %}
-<a class="navbar-brand">Hospital Address Registration</a>
+{% block nav %}
+<a class="navbar-brand">Hospital Profile</a>
 {% endblock %}
+{%block nav2 %} <a class="nav-link" href="{% url 'hosp_dash' %}"> Dashboard </a>{% endblock %}
+
 
 {% block content %}
 <div class="container" id="reg">
@@ -23,7 +25,7 @@
         </div>
         <div class="col-6">
           <label class="control-label">DATE OF REGISTRATION</label>
-          <input type="text" class="form-control" name="dateofregistration" id="dateofregistration" value="{{hospital.dateofregistration}}" required/>
+          <input type="text" class="form-control datepicker" name="dateofregistration" id="dateofregistration" value="{{hospital.dateofreg|date:'m/d/Y'}}" required/>
         </div>
       </div>
 

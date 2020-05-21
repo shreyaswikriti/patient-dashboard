@@ -1,160 +1,145 @@
-
 {% extends 'hosp/base.html' %}
-
-
 {% block title %} Doctor Dashboard {% endblock %}
 {% block nav %}<a class="navbar-brand" href="" >Doctor Dashboard </a>{% endblock %}
-
 {%block nav2 %} <a class="nav-link" href="{% url 'doctor_profile' %}"> Doctor Profile </a>{% endblock %}
-
-
 {% block content %}
+<style type="text/css">
+   .container td{ width: 50%;
+   background-color: #E1F5FE;
+   border:1px solid #7f1f1f;
+   }
+   .container tbody tr :hover td, .table tbody tr:hover td {
+   background-color: #C0C0C0;
+   }
+   .conatainer{ 
+   font-size: medium;
+   }
 
-	<style type="text/css">
-      .container td{ width: 50%;
-      background-color: #E1F5FE;
-      border:1px solid #7f1f1f;
-           }
-           .container tbody tr :hover td, .table tbody tr:hover td {
-            background-color: #C0C0C0;
-           }
-           .conatainer{ 
-           font-size: medium;
-            }
-          </style>
-
-<div>
-<h1> EDIT PROFILE </h1>
-<br>
-
-<div class="container">
-<form class="well form-horizontal" action="" method="post" id="edit form">
-    <fieldset>
-        <h2>GENERAL DETAILS</h2>
-<br>
-    <div class="form-row">
-        <div class="col">
-            <label for="firstName" class="col-md-4 control-label">FIRST NAME</label>
-        <div class="col-md-12 inputGroupContainer">
-            <div class="input-group">
-                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{prof.firstName}}" value="{{prof.firstName}}">
+</style>
+   <br>
+   <div class="container">
+      <form class="well form-horizontal" action="" method="post" id="edit form">
+         {% csrf_token %}
+            <h2>UPDATE GENERAL DETAILS</h2>
+            <br>
+            <div class="form-row">
+               <div class="col">
+                  <label for="firstName" class="col-md-4 control-label">FIRST NAME</label>
+                  <div class="col-md-12 inputGroupContainer">
+                     <div class="input-group">
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{prof.firstName}}" value="{{prof.firstName}}">
+                     </div>
+                  </div>
+               </div>
+               <div class="col">
+                  <label for="dob" class="col-md-4 control-label">DATE OF BIRTH</label>
+                  <div class="input-group">
+                     <input type="text" id="bday" name="bday" class="form-control datepicker" placeholder="Birth Day" value="{{prof.dob|date:'m/d/Y'}}">
+                  </div>
+               </div>
             </div>
-        </div>
-    </div>
-
-    <div class="col">
-            <label for="dob" class="col-md-4 control-label">DATE OF BIRTH</label>
-            <div class="input-group">
-              <input type="text" id="bday" name="bday" class="form-control datepicker" placeholder="Birth Day" value="{{prof.dob|date:'m/d/Y'}}">
-        </div>
-    </div>
-
-</div>
-
-<div class="form-row">
-        <div class="col">
-            <label for="lastName" class="col-md-4 control-label">Lastname</label>
-        <div class="col-md-12 inputGroupContainer">
-            <div class="input-group">
-                <input type="text"  class="form-control" id="lastName" name="lastName" placeholder="{{prof.lastName}}" value="{{prof.lastName}}">
+            <div class="form-row">
+               <div class="col">
+                  <label for="lastName" class="col-md-4 control-label">Lastname</label>
+                  <div class="col-md-12 inputGroupContainer">
+                     <div class="input-group">
+                        <input type="text"  class="form-control" id="lastName" name="lastName" placeholder="{{prof.lastName}}" value="{{prof.lastName}}">
+                     </div>
+                  </div>
+               </div>
+               <div class="col">
+                  <label  for="gender" class="col-md-4 control-label">GENDER</label>
+                  <div class="col-md-4 selectContainer">
+                     <div class="input-group">
+                        <select name="gender" class="form-control selectpicker" id="gender" name="gender" placeholder="{{prof.gender}}" >
+                           <option value="{{prof.gender}}">{{prof.gender}}</option>
+                           {% if prof.gender != "MALE" %}
+                           <option>MALE</option>
+                           {% endif %}
+                           {% if prof.gender != "FEMALE" %}
+                           <option>FEMALE</option>
+                           {% endif %}
+                           {% if prof.gender != "OTHERS" %}
+                           <option>OTHERS</option>
+                           {% endif %}                
+                        </select>
+                     </div>
+                  </div>
+               </div>
             </div>
-        </div>
-    </div>
-
-    <div class="col">
-            <label  for="gender" class="col-md-4 control-label">GENDER</label>
-        <div class="col-md-4 selectContainer">
-            <div class="input-group">
-                <select name="gender" class="form-control selectpicker" id="gender" name="gender" placeholder="{{prof.gender}}" >
-                    <option value="{{prof.gender}}">{{prof.gender}}</option>
-                   {% if prof.gender != "MALE" %}
-                    <option>MALE</option>
-                    {% endif %}
-                     {% if prof.gender != "FEMALE" %}
-                    <option>FEMALE</option>
-                    {% endif %}
-                    {% if prof.gender != "OTHERS" %}
-                    <option>OTHERS</option>
-                    {% endif %}                </select>
+            <div class="form-group">
+               <div class="col">
+                  <label for="hospital" class="col-md-4 control-label">HOSPITAL</label>
+                  <select id="hospital1" name="hospital" class="form-control">
+                     <option selected value="{{prof.hospital.id}}">{{prof.hospital.name}}</option>
+                     {% if hospital %}
+                     {% for h in hospital %}
+                     {% if h.name != prof.hospital.name %}
+                     <option value="{{h.id}}">{{h.name}}</option>
+                     {% endif %}
+                     {% endfor %}
+                     {% endif %}
+                  </select>
+               </div>
             </div>
-        </div>
-    </div>
-</div>
-
-
-    
-
-     
-     <div class="form-group">
-        <div class="col">
-             <label for="hospital" class="col-md-4 control-label">HOSPITAL</label>
-        <select id="hospital1" name="hospital" class="form-control">
-    <option selected>{{prof.hospital.name}}</option>
-    {% if hospital %}
-           {% for h in hospital %}
-             {% if h.name != prof.hospital.name %}
-            <option value="{{h.id}}">{{h.name}}</option>
-                                {% endif %}
-   {% endfor %}
-    {% endif %}
-      </select>  
-       </div>
-           
-       <!-- <div class="col-md-6 inputGroupContainer">
-            <div class="input-group">
-                <input type="text" class="form-control" id="hospital"name="hsopital" placeholder="{{prof.hospital}}" value="{{prof.hospital}}">
+            <div class="form-group">
+               <label class="col-md-4 control-label"></label>
+               <div class="col-md-4">  <br>
+                  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                  <button type="submit" class="btn btn-success"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Save  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+               </div>
             </div>
-        </div>-->
-    </div>
-
-    
-
-<br>
-<h2>SPECIALIZATION</h2>
-        <br>
-    <div class="form-group">
-            <label for="treatment" class="col-md-4 control-label">TREATMENT</label>
-        <div class="col-md-6 inputGroupContainer">
-            <div class="input-group">
-                <input type="text" class="form-control" id="treatment" name="treatment" placeholder="Enter the Treatment" value="{{spec.treatment}}">
-            </div>
-        </div>
-    </div>
-    <br>
-
-<h2>EDUCATION</h2>
-        <br>
+      </form>
+      <br>
+      <h2>UPDATE SPECIALIZATION</h2>
+      <br>
+      <div id="add_speci">
+      {% for spec in specs %}
+      <form class="well form-horizontal" action="{% url 'update_specialisation' spec.id %}" method="post" id="edit form">
+                 {% csrf_token %}
       <div class="form-row">
-        <div class="col">
-            <label for="college" class="col-md-4 control-label">COLLEGE</label>
-        <div class="col-md-12 inputGroupContainer">
-            <div class="input-group">
-                <input type="text" class="form-control" id="college" name="college" placeholder="Enter the College" value="{{educ.college}}">
-            </div>
-        </div>
-    </div>
-
+      <div class="col-9">
+      <input type="text" class="form-control" id="treatment" name="treatment" placeholder="Enter the Treatment" value="{{spec.treatment}}">
+      </div>
+      <div class="col">
+      <button type="submit" class="btn btn-primary"><a id="save_spec" >Save</a></button>
+      </div>
          <div class="col">
-            <label for="degree" class="col-md-4 control-label">DEGREE</label>
-        <div class="col-md-12 inputGroupContainer">
-            <div class="input-group">
-                <input type="text" class="form-control" id="degree" name="degree" placeholder="Enter the Degree" value="{{educ.degree}}">
-            </div>
-        </div>
-    </div>
-</div>
-      <div class="form-group">
-            <label class="col-md-4 control-label"></label>
-        <div class="col-md-4">  <br>
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <button type="submit" class="btn btn-success"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Save  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
-
-        </div>
-    </div>
-
-    </fieldset>
-</form>
-</div>
-</div>
-
+      <button type="button" class="btn btn-danger"><a id="del_spec" href="{% url 'delete_spec' spec.id %}" >Delete</a></button>
+      </div>
+      </div>
+      <br>
+      </form>
+      {% endfor %}
+      </div>
+      <br>
+      <button type="button" class="btn btn-primary"><a id="add_spec" href="{% url 'add_spec' %}" >Add Specialization</a></button>
+      <br>
+      <br>
+      <h2>UPDATE EDUCATION</h2>
+      <div id="add_degrees">
+      {% for educ in educs %}
+      <form class="well form-horizontal" action="{% url 'update_college' educ.id %}" method="post" id="edit form">
+                 {% csrf_token %}
+      <div class="form-row">
+      <div class="col-5">
+      <input type="text" class="form-control" id="college" name="college" placeholder="Enter the College" value="{{educ.college}}">
+      </div>
+      <div class="col-5">
+      <input type="text" class="form-control" id="degree" name="degree" placeholder="Enter the Degree" value="{{educ.degree}}">
+      </div>
+      <div class="col">
+      <button type="submit" class="btn btn-primary"><a id="save_edu" >Save</a></button>
+      </div>
+          <div class="col">
+      <button type="button" class="btn btn-danger"><a id="del_spec" href="{% url 'delete_college' educ.id %}" >Delete</a></button>
+      </div>
+      </div>
+      <br>
+      </form>
+      {% endfor %}
+      </div>
+      <br>
+      <button type="button" class="btn btn-primary"><a id="add_degree" href="{% url 'add_college' %}">Add Degree</a></button>
+   </div>
 {% endblock %}

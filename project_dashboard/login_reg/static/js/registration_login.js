@@ -47,3 +47,30 @@
 //     '<input class="btn btn-primary btnn" type="submit" value="Register"></form>'
 //      //validation code to see State field is mandatory.  
 //     }  
+
+
+// $("#add_degree").click(function(){
+//   $("#add_degrees").append('<div class="form-row"><div class="col"><input type="text" class="form-control" id="college" name="new_college" placeholder="Enter the College" value="">'+
+//             '</div><div class="col"><input type="text" class="form-control" id="degree" name="new_degree" placeholder="Enter the Degree" value="">'+
+//             '</div><div class="col"><button type="button" class="btn btn-danger"><a id="can_deg">Cancel</a></button></div></div><br>');
+ 
+// });
+
+// $("#add_spec").click(function(){
+//   $("#add_speci").append('<br><div class="form-row">'+
+//                '<div class="col"><input type="text" class="form-control" id="treatment" name="new_treatment" placeholder="Enter the Treatment" value="Add Your Specialization"></div>'+
+//                '<div class="col"> <button type="button" class="btn btn-danger"><a id="can_spec">Cancel</a></button></div>'+
+//             '</div>');
+
+// });
+
+//   $("#can_deg").click(function(){
+//   $(this).parent().parent().parent().remove();
+// });
+
+
+//  $("#can_spec").click(function(){
+//   $(this).parent().parent().parent().remove();
+//   console.log("Hello");
+// });
+
