@@ -4,7 +4,7 @@
 {% block title %} Hospital Detail {% endblock %}
 
 {% block nav %}
-<a class="navbar-brand">Hospital Profile</a>
+<a class="navbar-brand">{{hospital.name}}</a>
 {% endblock %}
 {%block nav2 %} <a class="nav-link" href="{% url 'hosp_dash' %}"> Dashboard </a>{% endblock %}
 

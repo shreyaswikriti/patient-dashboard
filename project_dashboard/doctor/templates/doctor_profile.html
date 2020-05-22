@@ -2,9 +2,9 @@
 
 
 {% block title %} Doctor Profile {% endblock %}
-{% block nav %}<a class="navbar-brand" href="" >Doctor Profile </a>{% endblock %}
+{% block nav %}<a class="navbar-brand" href="" >{{prof.firstName}} </a>{% endblock %}
 
-{%block nav2 %} <a class="nav-link" href="{% url 'doc_dash' %}"> Doctor Dashboard </a>{% endblock %}
+{%block nav2 %} <a class="nav-link" href="{% url 'doc_dash' %}">  Dashboard </a>{% endblock %}
 
 {% block content %}
 
@@ -20,6 +20,9 @@
   font-weight: bolder;
 
 height: 20px;
+ }
+ #rating{
+    background-color: yellow;
  }
   </style>
 <div class="container">
@@ -42,6 +45,10 @@ height: 20px;
       <tr >
           <td><b>HOSPITAL</b></td>
           <td>{{prof.hospital.name}}</td>
+      </tr>
+         <tr >
+          <td id="rating"><b>Rating</b></td>
+          <td id="rating" >{{rating}}</td>
       </tr>
   </table>
 </div>

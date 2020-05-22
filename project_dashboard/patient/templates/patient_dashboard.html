@@ -3,9 +3,9 @@
 
 
 {% block title %} Patient Dashboard {% endblock %}
-{{% block nav %}<a class="navbar-brand" href="" >Patient Dashboard </a>{% endblock %}
+{{% block nav %}<a class="navbar-brand" href="" > Dashboard  </a>{% endblock %}
 
-{%block nav2 %} <a class="nav-link" href="{% url 'patient_profile' %}">Patient Profile</a>{% endblock %}
+{%block nav2 %} <a class="nav-link" href="{% url 'patient_profile' %}">{{patient.firstName}}</a>{% endblock %}
 {%block search%} {% url 'doctor_search' %}{%endblock%}
 {% if count == 0 %}
 {% else %}

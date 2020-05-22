@@ -22,7 +22,7 @@ def hosp_dash(request):
 	doctors = DoctorProfile.objects.filter(hospital=hospital).order_by('timestamp')
 	if doctors is None:
 		logger.info("There is no Doctor")
-	context  = {'doctors':doctors}
+	context  = {'doctors':doctors,'hospital':hospital}
 	return render(request, 'hospital_dashboard.html', context)
 
 

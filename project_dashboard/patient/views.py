@@ -9,6 +9,7 @@ from login_reg.views import home
 from django.contrib.auth import authenticate
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.db.models import Avg, Count
 
 # Create your views here.
 import logging
@@ -79,7 +80,8 @@ def patient_detail(request, pk):
 def doctor_search(request):
 	query = request.GET['query']
 	rs = DoctorSpecialisation.objects.filter(treatment__icontains=query)
-	context = {'rs':rs}
+	patient = PatientProfile.objects.filter(user=request.user).first()
+	context = {'rs':rs, 'patient':patient}
 	return render(request, 'doctor_search.html', context)
 
 
@@ -87,7 +89,8 @@ def doctor_search(request):
 @allowed_roles(allowed_roles=['PATIENT'])
 def all_doctor(request):
 	rs = DoctorSpecialisation.objects.all()
-	context = {'rs':rs}
+	patient = PatientProfile.objects.filter(user=request.user).first()
+	context = {'rs':rs, 'patient':patient}
 	return render(request, 'doctor_search.html', context)
 
 @login_required(login_url='home')
@@ -96,9 +99,10 @@ def make_appointment(request):
 	doc = request.POST['doctor']
 	treatments = request.POST['treatment']
 	logger.info("Doctor with id {} got request for appointment".format(doc))
+	patient = PatientProfile.objects.filter(user=request.user).first()
 	doctor = DoctorProfile.objects.filter(id=doc).first()
 	treatment = DoctorSpecialisation.objects.filter(doctor=doctor)
-	context = {'doctor':doctor, 'treatment':treatment, 'treatments':treatments}
+	context = {'doctor':doctor, 'treatment':treatment, 'treatments':treatments, 'patient':patient}
 	return render(request, 'appointment.html', context)
 
 
@@ -200,9 +204,10 @@ def doc_profile(request, pk):
 		prof = DoctorProfile.objects.filter(id=pk).first()
 		educs = DoctorEducation.objects.filter(doctor=prof)
 		specs = DoctorSpecialisation.objects.filter(doctor=prof)
+		rating = PatientTreatment.objects.filter(doctor=prof).aggregate(Avg('rating'))['rating__avg']
 	except:
 		logger.error("object not found")
-	context = {'prof':prof,'educs':educs,'specs':specs}
+	context = {'prof':prof,'educs':educs,'specs':specs, 'rating':rating}
 	return render(request,'doc_profile.html',context)
 
 

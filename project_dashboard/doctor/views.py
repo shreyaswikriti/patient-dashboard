@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from hospital.models import hospitalProfile
 from datetime import datetime
+from django.db.models import Avg, Count
 # Create your views here.
 import logging
 
@@ -42,12 +43,14 @@ def doctor_profile(request):
 		educs = DoctorEducation.objects.filter(doctor=prof)
 
 		specs = DoctorSpecialisation.objects.filter(doctor=prof)
+		rating = PatientTreatment.objects.filter(doctor=prof).aggregate(Avg('rating'))['rating__avg']
+
 
 	except:
 		logger.error("Not found")
 
 
-	return render(request, 'doctor_profile.html', {"prof":prof,"educs":educs,"specs":specs})
+	return render(request, 'doctor_profile.html', {"prof":prof,"educs":educs,"specs":specs, 'rating':rating})
 
 
 @login_required(login_url='home')
@@ -119,7 +122,8 @@ def add_college(request):
 		messages.success(request, 'You have added your college')
 		return redirect('edit_profile')
 	else:
-		context = {}
+		prof = DoctorProfile.objects.filter(user=request.user).first()
+		context = {'prof':prof}
 		return render(request, 'add_degree.html', context)
 
 
@@ -133,7 +137,8 @@ def add_spec(request):
 		messages.success(request, 'You have added your Specialisation')
 		return redirect('edit_profile')
 	else:
-		context = {}
+		prof = DoctorProfile.objects.filter(user=request.user).first()
+		context = {'prof':prof}
 		return render(request, 'add_spec.html', context)
 
 @login_required(login_url='home')
@@ -159,7 +164,7 @@ def delete_college(request, pk):
 def requested_appointment(request):
 	doctor = DoctorProfile.objects.filter(user=request.user).first()
 	appointments = PatientAppointment.objects.filter(doctor=doctor,status='REQUESTED').order_by('timestamp')
-	context = {'appointments':appointments}
+	context = {'appointments':appointments,'doctor':doctor}
 	return render(request, 'requested_appointment.html', context)
 
 

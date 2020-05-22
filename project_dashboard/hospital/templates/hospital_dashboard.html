@@ -2,9 +2,9 @@
 
 
 {% block title %} Hospital Dashboard {% endblock %}
-{% block nav %}<a class="navbar-brand" href="" >Hospital Dashboard </a>{% endblock %}
+{% block nav %}<a class="navbar-brand" href="" > Dashboard </a>{% endblock %}
 
-{%block nav2 %} <a class="nav-link" href="{% url 'hospital_profile' %}"> Hospital Profile </a>{% endblock %}
+{%block nav2 %} <a class="nav-link" href="{% url 'hospital_profile' %}"> {{hospital.name}} </a>{% endblock %}
 
 {% block content %}
 

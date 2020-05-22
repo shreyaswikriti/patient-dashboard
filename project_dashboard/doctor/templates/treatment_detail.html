@@ -4,7 +4,7 @@
 {% block title %} Patient Detail {% endblock %}
 {% block nav %}<a class="navbar-brand" href="{%url 'pat_profile' treatment.patient.id %}" >{{treatment.patient.firstName}} Details </a>{% endblock %}
 
-{%block nav2 %} <a class="nav-link" href="{% url 'doc_dash' %}">Doctor Dashboard </a>{% endblock %}
+{%block nav2 %} <a class="nav-link" href="{% url 'doc_dash' %}"> Dashboard </a>{% endblock %}
 
 
  {% block content %}
