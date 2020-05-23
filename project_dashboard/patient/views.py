@@ -204,10 +204,11 @@ def doc_profile(request, pk):
 		prof = DoctorProfile.objects.filter(id=pk).first()
 		educs = DoctorEducation.objects.filter(doctor=prof)
 		specs = DoctorSpecialisation.objects.filter(doctor=prof)
-		rating = PatientTreatment.objects.filter(doctor=prof).aggregate(Avg('rating'))['rating__avg']
+		user = PatientProfile.objects.filter(user=request.user).first()
+		rating = round(PatientTreatment.objects.filter(doctor=prof).aggregate(Avg('rating'))['rating__avg'], 2)
 	except:
 		logger.error("object not found")
-	context = {'prof':prof,'educs':educs,'specs':specs, 'rating':rating}
+	context = {'prof':prof,'educs':educs,'specs':specs, 'rating':rating, 'user':user}
 	return render(request,'doc_profile.html',context)
 
 

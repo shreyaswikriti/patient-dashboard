@@ -43,7 +43,7 @@ def doctor_profile(request):
 		educs = DoctorEducation.objects.filter(doctor=prof)
 
 		specs = DoctorSpecialisation.objects.filter(doctor=prof)
-		rating = PatientTreatment.objects.filter(doctor=prof).aggregate(Avg('rating'))['rating__avg']
+		rating = round(PatientTreatment.objects.filter(doctor=prof).aggregate(Avg('rating'))['rating__avg'],2)
 
 
 	except:
