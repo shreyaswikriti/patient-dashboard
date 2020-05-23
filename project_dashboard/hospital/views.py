@@ -13,6 +13,7 @@ from django.contrib import messages
 logger = logging.getLogger(__name__)
 # Create your views here.
 
+@login_required(login_url='home')
 @allowed_roles(allowed_roles=['HOSPITAL'])
 def hosp_dash(request):
 	hospital = hospitalProfile.objects.filter(user=request.user).first()
@@ -26,6 +27,8 @@ def hosp_dash(request):
 	return render(request, 'hospital_dashboard.html', context)
 
 
+
+@login_required(login_url='home')
 @allowed_roles(allowed_roles=['HOSPITAL'])
 def hospital_profile(request):
 	try:
@@ -91,3 +94,41 @@ def hospital_address(request, pk):
 		Address = hospitalAddress.objects.filter(id=pk).first()
 		context = {'hospital':hospital,'Address':Address}
 		return render(request,'hospital_address.html',context)
+
+
+
+@login_required(login_url='home')
+@allowed_roles(allowed_roles=['HOSPITAL'])
+def verify_doctor(request, pk):
+	if request.method=='POST':
+		status = request.POST['status']
+		if status == 'True':
+			DoctorProfile.objects.filter(id=pk).update(verify=True)
+			messages.success(request, "You have verified your doctor")
+		else:
+			DoctorProfile.objects.filter(id=pk).update(verify=False)
+			messages.success(request, "You have cancel verification of your doctor")
+		return redirect('hosp_dash')
+	else:
+		hospital = hospitalProfile.objects.filter(user=request.user).first()
+		if hospital is None:
+			logger.error("There is no hospital")
+			redirect('error')
+		doctor = DoctorProfile.objects.filter(id=pk).first()
+		if doctor is None:
+			logger.info("There is no Doctor")
+		context  = {'doctor':doctor,'hospital':hospital}
+		return render(request, 'verification.html', context)
+
+
+
+
+def search_doctor(request):
+	query = request.GET['query']
+	hospital = hospitalProfile.objects.filter(user=request.user).first()
+	if hospital is None:
+		logger.error("There is no hospital")
+		redirect('error')
+	doctors = DoctorProfile.objects.filter(firstName__icontains=query, hospital=hospital)
+	context  = {'doctors':doctors,'hospital':hospital}
+	return render(request, 'hospital_dashboard.html', context)

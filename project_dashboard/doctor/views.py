@@ -41,6 +41,8 @@ def doctor_profile(request):
 		logger.info("Name:{}{} Dob:{} Gender:{} Hospital:{}".format(prof.firstName,prof.lastName,prof.dob,prof.gender,prof.hospital))
 
 		educs = DoctorEducation.objects.filter(doctor=prof)
+		if prof.verify==None:
+			messages.success(request, 'Your Profile has not been verified by your hospital, If you don\'n belong to this hospital Please change your hospital')
 
 		specs = DoctorSpecialisation.objects.filter(doctor=prof)
 		rating = round(PatientTreatment.objects.filter(doctor=prof).aggregate(Avg('rating'))['rating__avg'],2)

@@ -16,6 +16,7 @@ class DoctorProfile(models.Model):
 	dob = models.DateField(null=False)
 	gender = models.CharField(max_length=100, choices=GENDER)
 	timestamp = models.DateTimeField(auto_now_add=True)
+	verify  = models.BooleanField(null=True)
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	hospital = models.ForeignKey(hospitalProfile, on_delete=models.CASCADE)
 

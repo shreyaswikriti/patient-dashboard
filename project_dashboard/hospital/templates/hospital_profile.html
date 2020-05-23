@@ -5,6 +5,8 @@
 {% block nav %}<a class="navbar-brand" href="" >{{hdetail.name}}</a>{% endblock %}
 
 {%block nav2 %} <a class="nav-link" href="{% url 'hosp_dash' %}"> Dashboard </a>{% endblock %}
+{%block search%} {% url 'search_doctor' %}{%endblock%}
+
 
 {% block content %}
 

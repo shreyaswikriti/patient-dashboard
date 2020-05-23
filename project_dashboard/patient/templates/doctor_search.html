@@ -19,6 +19,7 @@
       <th scope="col">Treatment</th>
       <th scope="col">Gender</th>
       <th scope="col">Hospital</th>
+      <th scope="col">Verified</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -30,6 +31,7 @@
       <td>{{r.treatment}}</td>
       <td>{{r.doctor.gender}}</td>
       <td>{{r.doctor.hospital.name}}</td>
+      <td>{{r.doctor.verify}}</td>
      <td> <form action="{% url 'appointment' %}" method="POST"> 
      {%csrf_token%} 
      <input type="hidden" name="treatment" value={{r.treatment}}><input type="hidden" id="custId" name="doctor" value="{{r.doctor.id}}">
