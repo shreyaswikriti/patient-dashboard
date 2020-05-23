@@ -2,7 +2,9 @@
 
 
 {% block title %} Patient Profile {% endblock %}
-{{% block nav %}<a class="navbar-brand" href="" >Patient Profile </a>{% endblock %}
+{% block nav %}<a class="navbar-brand" href="" >{{detail.firstName}} </a>{% endblock %}
+{%block nav2 %} <a class="nav-link" href="{% url 'doc_dash' %}">  Dashboard </a>{% endblock %}
+
 
 {% block content %}
 
@@ -26,7 +28,6 @@ height: 20px;
 <table class="table table-hover">
     <thead>
       <tr>
-        <h1>PROFILE</h1>
       </tr>
     </thead>
     <tbody>
@@ -59,7 +60,7 @@ height: 20px;
   <table class="table table-hover">
     <thead>
       <tr>
-        <h1>ADDRESS</h1>
+        <h3>ADDRESS</h3>
       </tr>
     </thead>
     <tbody>
