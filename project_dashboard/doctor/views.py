@@ -36,6 +36,7 @@ def doc_dash(request):
 
 # @allowed_roles(allowed_roles=['DOCTOR'])
 def doctor_profile(request):
+	rating=0
 	try:
 		prof = DoctorProfile.objects.filter(user=request.user).first()
 		logger.info("Name:{}{} Dob:{} Gender:{} Hospital:{}".format(prof.firstName,prof.lastName,prof.dob,prof.gender,prof.hospital))
