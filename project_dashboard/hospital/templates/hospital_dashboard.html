@@ -23,7 +23,7 @@
  <tbody>
     <tr>
       <th>{{ forloop.counter }}</th>
-      <th scope="row">{{doctor.firstName}}</th>
+      <th scope="row"><a class="link" style="color: black;"href="{% url 'doc_profile'  doctor.id  %}">{{doctor.firstName}}</a></th>
       <td>{{doctor.dob}}</td>
       <td>{{doctor.gender}}</td>
       {% if doctor.verify == None or doctor.verify == False %}

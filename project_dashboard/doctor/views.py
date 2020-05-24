@@ -47,8 +47,6 @@ def doctor_profile(request):
 
 		specs = DoctorSpecialisation.objects.filter(doctor=prof)
 		rating = round(PatientTreatment.objects.filter(doctor=prof).aggregate(Avg('rating'))['rating__avg'],2)
-
-
 	except:
 		logger.error("Not found")
 

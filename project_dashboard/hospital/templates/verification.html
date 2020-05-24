@@ -22,7 +22,7 @@
   </thead>
  <tbody>
     <tr>
-      <th scope="row">{{doctor.firstName}}</th>
+      <th scope="row"><a class="link" style="color: black;"href="{% url 'doc_profile'  doctor.id  %}">{{doctor.firstName}}</a></th>
       <td>{{doctor.dob}}</td>
       <td>{{doctor.gender}}</td>
      <td> <form method="POST"> {% csrf_token %}<input type="hidden" name="status" value="True"><button type="submit" class="btn btn-primary">Verify</button></form></td>

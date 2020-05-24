@@ -198,17 +198,18 @@ def all_appointments(request):
 	return render(request, 'all_appointments.html', context)
 
 @login_required(login_url='home')
-@allowed_roles(allowed_roles=['PATIENT'])
+@allowed_roles(allowed_roles=['PATIENT', 'HOSPITAL'])
 def doc_profile(request, pk):
+	rating= 0
 	try:
 		prof = DoctorProfile.objects.filter(id=pk).first()
 		educs = DoctorEducation.objects.filter(doctor=prof)
 		specs = DoctorSpecialisation.objects.filter(doctor=prof)
-		user = PatientProfile.objects.filter(user=request.user).first()
+		userpat = PatientProfile.objects.filter(user=request.user).first()
 		rating = round(PatientTreatment.objects.filter(doctor=prof).aggregate(Avg('rating'))['rating__avg'], 2)
 	except:
 		logger.error("object not found")
-	context = {'prof':prof,'educs':educs,'specs':specs, 'rating':rating, 'user':user}
+	context = {'prof':prof,'educs':educs,'specs':specs, 'rating':rating, 'userpat':userpat}
 	return render(request,'doc_profile.html',context)
 
 

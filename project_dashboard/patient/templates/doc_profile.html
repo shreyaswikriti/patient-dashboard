@@ -5,7 +5,14 @@
 {% block nav %}<a class="navbar-brand" href="" >{{prof.firstName}}</a>{% endblock %}
 
 
-{%block nav2 %} <a class="nav-link" href="{% url 'patient_profile' %}">{{user.firstName}}</a>{% endblock %}
+{%block nav2 %} <a class="nav-link" href="{% url 'patient_profile' %}">{{userpat.firstName}}</a>{% endblock %}
+{%block nav3 %} 
+{% if userpat %}
+{% else %}
+<a class="nav-link" href="{% url 'hospital_profile' %}">{{prof.hospital.name}}</a>
+{% endif%}
+{% endblock %}
+
 
 {%block search%} {% url 'doctor_search' %}{%endblock%}
 {% block content %}
